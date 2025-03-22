@@ -3,6 +3,8 @@ import {
     loginUser,
     logoutUser,
     registerUser,
+    sendOtp,
+    verifyOtp,
     refreshAccessToken,
     changeCurrentPassword,
     getCurrentUser,
@@ -46,4 +48,7 @@ router.route("/updateUserCoverImage").patch(verifyJWT,upload.single("coverImage"
 
 router.route("/c/:username").get(verifyJWT,getUserChannel)
 router.route("/history").get(verifyJWT,getUserWatchHistory)
+
+router.route("/otp/send").post(sendOtp);
+router.route("/otp/verify").post(verifyOtp);
 export default router  

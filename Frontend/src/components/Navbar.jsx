@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { openLogin } from "../redux/slices/modalSlice";
+import { openLogin,openRegister } from "../redux/slices/modalSlice";
 
 export default function Navbar() {
 //   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const dispatch = useDispatch()
   // const {isLoginOpen} = useSelector((state) => state.modal)
 
   return (
-    <div className="relative bg-zinc-950 text-white shadow-lg shadow-[0px_0px_20px_rgba(251,113,133,0.5)]">
+    <div className="relative bg-zinc-950 text-white shadow-[0px_0px_30px_rgba(251,113,133,0.5)]">
       {/* Navbar content */}
       <div className="flex items-center justify-between px-6 py-4 relative z-10">
         {/* Logo */}
@@ -48,7 +48,7 @@ const dispatch = useDispatch()
         {!user && 
           (<div className="flex gap-2 md:gap-5">
             <h2 onClick={() => dispatch(openLogin())} className="font-semibold hover:font-bold text-sm md:text-lg cursor-pointer">Login</h2>
-            <h2 className="font-semibold hover:font-bold text-sm md:text-lg cursor-pointer">Signup</h2>
+            <h2 onClick={() => dispatch(openRegister())} className="font-semibold hover:font-bold text-sm md:text-lg cursor-pointer">Signup</h2>
           </div>)
         }
       </div>

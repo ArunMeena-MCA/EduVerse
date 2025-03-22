@@ -5,8 +5,7 @@ import { motion } from "framer-motion";
 import PrimaryButton from "../utils/PrimaryButton";
 import SecButton from "../utils/SecButton";
 import { useDispatch, useSelector } from "react-redux";
-import { openLogin } from "../redux/slices/modalSlice";
-import Login from "../components/Login.jsx";
+import { openLogin,openRegister } from "../redux/slices/modalSlice";
 
 function Introductory() {
     const images = [Reel, Reel, Reel, Reel, Reel];
@@ -28,7 +27,7 @@ function Introductory() {
       </h2>
       <div className="flex justify-center gap-5 mt-10">
         <PrimaryButton onClick={()=> dispatch(openLogin())} className="bg-rose-400 text-xl md:text-3xl px-4">Login</PrimaryButton>
-        <SecButton className="bg-stone-400 text-xl md:text-3xl ">Signup</SecButton>
+        <SecButton onClick={() => dispatch(openRegister())} className="bg-stone-400 text-xl md:text-3xl ">Signup</SecButton>
       </div>
       {/* <div className='flex mt-16'>
             <img className='h-28' src={Reel} alt="" />

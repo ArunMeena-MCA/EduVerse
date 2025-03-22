@@ -6,6 +6,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import {v2} from "cloudinary";
 import mongoose from "mongoose";
+import {sendOTP} from "../utils/sentOtp.js";
+import { console } from "inspector";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -23,10 +25,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-    // console.log(req.files);
-
     // get user details from frontend
-
     const { fullname, email, username, password } = req.body;
 
 
@@ -45,7 +44,6 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
 
-
     // check if user already exists : username, email
 
     const existedUser = await user.findOne({
@@ -53,7 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
     })
 
     if (existedUser) {
-        throw new ApiError(409, "User already exists");
+        throw new ApiError(409, "User already exists, Try with another username or email");
     }
 
 
@@ -69,7 +67,6 @@ const registerUser = asyncHandler(async (req, res) => {
         coverImageLocalPath = req.files.coverImage[0].path;
     }
 
-
     // Checking because Avatar is required field
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar is required...");
@@ -84,7 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
     
     // Rechecking because Avatar is required field
     if (!avatar) {
-        throw new ApiError(400, "Avatar is required")
+        throw new ApiError(402, "Avatar is required")
     }
 
 
@@ -119,8 +116,43 @@ const registerUser = asyncHandler(async (req, res) => {
 
 })
 
+const sendOtp = asyncHandler(async(req, res) => {
+    const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ success: false, message: "Email is required" });
+  }
+
+  const otpResponse = await sendOTP(email);
+
+  if (!otpResponse.success) {
+    return res.status(500).json({ success: false, message: "Failed to send OTP" });
+  }
+
+  res.status(200).json({ success: true, message: "OTP sent successfully", token: otpResponse.token });
+})
+
+const verifyOtp = asyncHandler(async(req, res) => {
+    const { email, otp, token } = req.body;
+    console.log(req.body)
+    if (!email || !otp || !token) {
+        return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (decoded.email === email && decoded.otp === otp) {
+            return res.status(200).json({ success: true, message: "OTP verified successfully" });
+        } else {
+            return res.status(400).json({ success: false, message: "Invalid OTP" });
+        }
+    } catch (error) {
+        return res.status(400).json({ success: false, message: "OTP expired or invalid" });
+    }
+})
+
 const loginUser = asyncHandler(async(req,res) => {
     // req body se data le aao
+    console.log(req.body);
 
     const {email,username,password} = req.body;
 
@@ -131,7 +163,9 @@ const loginUser = asyncHandler(async(req,res) => {
     }
     
     // find the user
-    
+    // username = username.toLowerCase()
+    // email = email.toLowerCase()
+
     const newUser = await user.findOne({
         $or: [{username},{email}]
     })
@@ -536,6 +570,8 @@ const getUserWatchHistory = asyncHandler(async (req,res) => {
 
 export { 
     registerUser,
+    sendOtp,
+    verifyOtp,
     loginUser,
     logoutUser,
     refreshAccessToken,

@@ -9,8 +9,7 @@ import {
 import PrimaryButton from "../utils/PrimaryButton";
 import SecButton from "../utils/SecButton";
 import api from "../utils/api";
-import { closeLogin } from "../redux/slices/modalSlice";
-import { IoClose } from "react-icons/io5";
+import { closeLogin,openRegister } from "../redux/slices/modalSlice";
 
 function Login() {
   const dispatch = useDispatch();
@@ -26,8 +25,9 @@ function Login() {
     dispatch(loginStart());
 
     try {
-      const response = await api.post("/users/login", data); // Uses baseURL automatically
-      dispatch(closeLogin());
+      const response = await api.post("/users/login", data,
+        {headers: { "Content-Type": "application/json" }}
+      ); // Uses baseURL automatically
       dispatch(loginSuccess(response.data));
     } catch (error) {
       dispatch(
@@ -55,7 +55,7 @@ function Login() {
             </label>
             <input
               {...register("username", { required: "Username is required" })}
-              className="rounded-md px-1 w-28 lg:w-52"
+              className="rounded-md px-1 w-28 md:w-52"
               type="text"
               id="username"
               name="username"
@@ -74,7 +74,7 @@ function Login() {
             </label>
             <input
               {...register("password", { required: "Password is required" })}
-              className="rounded-md px-1 w-28 lg:w-52"
+              className="rounded-md px-1 w-28 md:w-52"
               type="password"
               id="password"
               name="password"
@@ -97,7 +97,7 @@ function Login() {
               {loading ? "Logging in..." : "Login"}
             </PrimaryButton>
             <hr />
-            <SecButton>Sign up</SecButton>
+            <SecButton onClick={()=> {dispatch(closeLogin()); dispatch(openRegister())}}>Sign up</SecButton>
           </div>
           <h3 className="mt-4 text-blue-400 hover:font-semibold text-center cursor-pointer">
             Forget Password!
