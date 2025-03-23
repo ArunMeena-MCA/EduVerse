@@ -16,6 +16,10 @@ const likeSchema = new Schema({
         likedBy: {
             type: Schema.Types.ObjectId,
             ref: "user"
+        },
+        dislikedBy: {
+            type: Schema.Types.ObjectId,
+            ref: "user"
         }
     },
     {

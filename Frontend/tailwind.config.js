@@ -10,6 +10,6 @@ export default {
       josefin: ['Josefin Sans', 'sans-serif'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
 }
 

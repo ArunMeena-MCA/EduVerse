@@ -17,7 +17,6 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
         }
     }
 
-
     if(!like){
         try{
             await Like.create({userId: req.User_id, video: videoId})
@@ -28,7 +27,6 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
 
     return res.status(200)
        .json(new ApiResponse(200, null, "Like toggled successfully"))
-
 })
 
 const toggleCommentLike = asyncHandler(async (req, res) => {

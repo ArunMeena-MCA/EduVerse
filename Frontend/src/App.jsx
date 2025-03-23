@@ -6,7 +6,9 @@ import GeneralButton from "./utils/GeneralButton";
 import Login from "./components/Login";
 import Introductory from "./components/Introductory";
 import Register from "./components/Register";
+import VideoDetail from "./components/VideoDetail";
 import Home from "./components/Home";
+import Profile from "./components/Profile";
 import { useDispatch, useSelector } from "react-redux";
 function App() {
   const {isLoginOpen,isRegisterationOpen} = useSelector((state) => state.modal)
@@ -21,8 +23,12 @@ function App() {
         {/* <div>
           <Introductory/>
         </div> */}
+        {/* <div>
+          <VideoDetail />
+        </div> */}
         <div>
-          <Home />
+          {/* <Home/> */}
+          <Profile />
         </div>
       </div>
 
