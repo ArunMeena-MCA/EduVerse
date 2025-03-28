@@ -29,6 +29,8 @@ function Login() {
         {headers: { "Content-Type": "application/json" }}
       ); // Uses baseURL automatically
       dispatch(loginSuccess(response.data));
+      // console.log(response.data.data.accessToken)
+      localStorage.setItem("token", response.data.data.accessToken);
     } catch (error) {
       dispatch(
         loginFailure(error.response?.data?.message || "Invalid credentials")
