@@ -9,8 +9,8 @@ import {ObjectId} from 'mongodb'
 // import { Cursor } from "mongoose";
 
 const getAllVideos = asyncHandler(async(req,res) => {
-    const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
-    
+    const { page = 1, limit = 10, query, sortBy='createdAt', sortType = 'dsc' } = req.query
+    const userId = req.User;
     const skip = (page-1) * limit;
 
     const filter = {}
@@ -57,8 +57,8 @@ const getAllVideos = asyncHandler(async(req,res) => {
 })
 
 const publishVideo = asyncHandler(async(req,res) => {
-    const {title,description} = req.body;
-
+    const {title,description,ispublished} = req.body;
+    
     if(!title){
         throw new ApiError(400,"title is required!!")
     }
@@ -91,8 +91,9 @@ const publishVideo = asyncHandler(async(req,res) => {
         thumbnail : thumbnail.url,
         videoFile : video.url,
         owner : req.User._id,
-        duration : video.duration
-    })
+        duration : video.duration,
+        ispublished
+    })    
 
     if(!newVideo){
         throw new ApiError(500,"Something went wrong while uploading the video")

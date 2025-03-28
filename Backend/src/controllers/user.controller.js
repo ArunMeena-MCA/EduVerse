@@ -8,6 +8,7 @@ import {v2} from "cloudinary";
 import mongoose from "mongoose";
 import {sendOTP} from "../utils/sentOtp.js";
 import { console } from "inspector";
+import { log } from "console";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -151,9 +152,6 @@ const verifyOtp = asyncHandler(async(req, res) => {
 })
 
 const loginUser = asyncHandler(async(req,res) => {
-    // req body se data le aao
-    console.log(req.body);
-
     const {email,username,password} = req.body;
 
     // access based on username (or email)
@@ -349,9 +347,11 @@ const updateAccountDetails = asyncHandler(async(req,res) => {
 })
 
 const updateUserAvatar = asyncHandler(async(req,res) => {
-    const avatarLocalPath = req.file?.path
+    console.log(req);
+    
+    const newAvatar = req.file?.path
 
-    if(!avatarLocalPath){
+    if(!newAvatar){
         throw new ApiError(400,"Avatar file is missing!")
     }
 
@@ -378,7 +378,7 @@ const updateUserAvatar = asyncHandler(async(req,res) => {
         }
     }
 
-    const avatar = await uploadOnCloudinary(avatarLocalPath);
+    const avatar = await uploadOnCloudinary(newAvatar);
 
     if(!avatar.url){
         throw new ApiError(400,"Error while uploading Avatar!")
@@ -448,6 +448,25 @@ const updateUserCoverImage = asyncHandler(async(req,res) => {
     .json(
         new ApiResponse(200,currentUser,"CoverImage Updated Successfully!")
     )
+})
+
+const getUserById = asyncHandler(async(req,res) => {
+    const { userId } = req.params;
+    if(!userId?.trim()){
+        throw new ApiError(400,"userId is missing")
+    }
+
+    const User = await user.findById(userId)
+       .select("-password")
+
+    if(!User){
+        throw new ApiError(404,"User not found")
+    }
+
+    return res.status(200)
+    .json(
+        new ApiResponse(200,User,"User fetched successfully")
+    )       
 })
 
 const getUserChannel = asyncHandler(async (req,res) => {
@@ -579,7 +598,8 @@ export {
     getCurrentUser,
     updateAccountDetails,
     updateUserAvatar,
+    getUserById, 
     updateUserCoverImage,
     getUserChannel,
-    getUserWatchHistory
+    getUserWatchHistory    
 }                      

@@ -10,6 +10,7 @@ import {
     getCurrentUser,
     updateAccountDetails,
     updateUserAvatar,
+    getUserById,
     updateUserCoverImage,
     getUserChannel,
     getUserWatchHistory
@@ -42,6 +43,8 @@ router.route("/refresh-token").post(refreshAccessToken)
 router.route("/changePassword").post(verifyJWT,changeCurrentPassword)
 router.route("/getCurrentUser").get(verifyJWT,getCurrentUser)  // get request
 router.route("/updateAccountDetails").post(verifyJWT,updateAccountDetails)
+
+router.route("/:userId").get(getUserById)  // get request
 
 router.route("/updateUserAvatar").patch(verifyJWT,upload.single("avatar"),updateUserAvatar)
 router.route("/updateUserCoverImage").patch(verifyJWT,upload.single("coverImage"),updateUserCoverImage)
