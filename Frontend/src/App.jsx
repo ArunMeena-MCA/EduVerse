@@ -1,26 +1,30 @@
 import React from "react";
 import Navbar from "./components/Navbar";
+import Login from "./components/Login";
+import Logout from "./components/Logout"
+import Register from "./components/Register";
+import UploadVideo from "./components/UploadVideo";
+import PostTweet from "./components/PostTweet";
+import EditProfile from "./components/EditProfile";
+import CreatePlaylist from "./components/CreatePlaylist";
 import PrimaryButton from "./utils/PrimaryButton";
 import SecButton from "./utils/SecButton";
 import GeneralButton from "./utils/GeneralButton";
-import Login from "./components/Login";
 import Introductory from "./components/Introductory";
-import Register from "./components/Register";
 import VideoDetail from "./components/VideoDetail";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
-import UploadVideo from "./components/UploadVideo";
 import { useDispatch, useSelector } from "react-redux";
-import { Upload } from "lucide-react";
-import PostTweet from "./components/PostTweet";
-import EditProfile from "./components/EditProfile";
+import { LogOut, Upload } from "lucide-react";
 function App() {
   const {
     isLoginOpen,
     isRegisterationOpen,
     isUploadVideoModalOpen,
+    isPlaylistModalOpen,
     isTweetModalOpen,
     isEditProfileModalOpen,
+    isLogoutOpen,
   } = useSelector((state) => state.modal);
 
   return (
@@ -30,31 +34,26 @@ function App() {
           isLoginOpen ||
           isRegisterationOpen ||
           isUploadVideoModalOpen ||
+          isPlaylistModalOpen ||
           isTweetModalOpen ||
-          isEditProfileModalOpen
+          isEditProfileModalOpen ||
+          isLogoutOpen
             ? "blur-sm"
             : ""
         }`}
       >
-        <Navbar />
-        {/* <div className="flex justify-center mt-[6%]">
-          <Login/>
-        </div> */}
-        {/* <div>
-          <Introductory/>
-        </div> */}
-        {/* <div>
-          <VideoDetail />
-        </div> */}
-        <div>
-          {/* <Home/> */}
-          <Profile />
-        </div>
+        <Navbar />       
       </div>
 
       {isLoginOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <Login />
+        </div>
+      )}
+
+      {isLogoutOpen && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <Logout />
         </div>
       )}
 
@@ -66,6 +65,12 @@ function App() {
       {isUploadVideoModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <UploadVideo />
+        </div>
+      )}
+
+      {isPlaylistModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <CreatePlaylist />
         </div>
       )}
 

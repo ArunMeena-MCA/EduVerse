@@ -10,6 +10,51 @@ import {ObjectId} from 'mongodb'
 
 const getAllVideos = asyncHandler(async(req,res) => {
     const { page = 1, limit = 10, query, sortBy='createdAt', sortType = 'dsc' } = req.query
+    const skip = (page-1) * limit;
+
+    // const filter = {}
+    const filter = {
+        ispublished: true
+    };
+
+    if(query){
+        filter.title = {$regex: query, $options: 'i'}
+    }
+
+
+    const sortOptions = {};
+    sortOptions[sortBy] = sortType === 'asc' ? 1 : -1
+
+    // console.log(sortOptions)
+    // console.log(filter)
+
+    try{
+        const videos = await Video.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort(sortOptions)
+        const totalVideos = await Video.countDocuments(filter);
+
+        res.status(200)
+        .json(
+            new ApiResponse(200,{
+                    videos,
+                    totalVideos,
+                    totalPages: Math.ceil(totalVideos / limit),
+                    CurrentPage: page,
+                },
+                "Videos fetched successfully"
+            )
+        )
+    }
+    catch(error){
+        console.error(error)
+        throw new ApiError(500,"Something went wrong while fetching videos")
+    }
+})
+
+const getAllVideosOfCurrentUser = asyncHandler(async(req,res) => {
+    const { page = 1, limit = 10, query, sortBy='createdAt', sortType = 'dsc' } = req.query
     const userId = req.User;
     const skip = (page-1) * limit;
 
@@ -29,7 +74,56 @@ const getAllVideos = asyncHandler(async(req,res) => {
     sortOptions[sortBy] = sortType === 'asc' ? 1 : -1
 
     // console.log(sortOptions)
-    console.log(filter)
+    // console.log(filter)
+
+    try{
+        const videos = await Video.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort(sortOptions)
+        const totalVideos = await Video.countDocuments(filter);
+
+        res.status(200)
+        .json(
+            new ApiResponse(200,{
+                    videos,
+                    totalVideos,
+                    totalPages: Math.ceil(totalVideos / limit),
+                    CurrentPage: page,
+                },
+                "Videos fetched successfully"
+            )
+        )
+    }
+    catch(error){
+        console.error(error)
+        throw new ApiError(500,"Something went wrong while fetching videos")
+    }
+})
+
+const getAllVideosOfUser = asyncHandler(async(req,res) => {
+    const { page = 1, limit = 10, query, sortBy='createdAt', sortType = 'dsc' } = req.query
+    const {userId} = req.params;
+    
+    const skip = (page-1) * limit;
+
+    const filter = {}
+
+    if(query){
+        filter.title = {$regex: query, $options: 'i'}
+    }
+
+    if(userId){
+        filter.owner = userId
+    }
+
+    // console.log(filter)
+
+    const sortOptions = {};
+    sortOptions[sortBy] = sortType === 'asc' ? 1 : -1
+
+    // console.log(sortOptions)
+    // console.log(filter)
 
     try{
         const videos = await Video.find(filter)
@@ -173,8 +267,7 @@ const updateVideo = asyncHandler(async (req, res) => {
 })
 
 const deleteVideo = asyncHandler(async (req, res) => {
-    let { videoId } = req.params
-    //TODO: delete video
+    let { videoId } = req.params    
 
     const video = await Video.findById(videoId);
     if(!video){
@@ -262,6 +355,7 @@ const incrementViews = asyncHandler(async (req, res) => {
 
 export{
     getAllVideos,
+    getAllVideosOfUser,
     getVideoById,
     publishVideo,
     updateVideo,

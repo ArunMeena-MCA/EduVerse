@@ -2,7 +2,7 @@ import { useDropzone } from "react-dropzone";
 import { useCallback } from "react";
 import { useState } from "react";
 import { CloudUpload } from "lucide-react";
-import { closeUploadVideoModal} from "../redux/slices/modalSlice";
+import { closeUploadVideoModal } from "../redux/slices/modalSlice";
 import { RiVideoDownloadLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { MdVerified } from "react-icons/md";
@@ -38,9 +38,9 @@ export default function UploadVideo() {
     setLoading(true);
     const token = localStorage.getItem("token");
     if (!token) {
-        setError("User not authenticated. Please log in.");
-        setLoading(false);
-        return;
+      setError("User not authenticated. Please log in.");
+      setLoading(false);
+      return;
     }
     const formdata = new FormData();
 
@@ -48,25 +48,24 @@ export default function UploadVideo() {
     formdata.append("description", description);
     formdata.append("videoFile", videoFile);
     formdata.append("thumbnail", thumbnail);
-    formdata.append("isPublic", isPublic);
+    formdata.append("ispublished", isPublic);
 
     try {
       const response = await api.post("/videos/publish", formdata, {
-        headers: { 
-            "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`, // Include token
-         },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // Include token
+        },
       });
       setUploaded(true);
     } catch (error) {
-        console.error("Error uploading video:", error);
-        if(error.response?.data?.message){
-            setError(error.response?.data?.message)
-        }
-        else{
-            setError("Failed to upload video");
-        }
-      dispatch(setLoading(false))
+      console.error("Error uploading video:", error);
+      if (error.response?.data?.message) {
+        setError(error.response?.data?.message);
+      } else {
+        setError("Failed to upload video");
+      }
+      dispatch(setLoading(false));
       return;
     }
   };
@@ -106,7 +105,9 @@ export default function UploadVideo() {
                   Video Uploaded
                 </h1>
                 <h1 className="w-96 text-center text-white mt-4 text-xl">
-                  Your video is published {isPublic ? "publically" : "privately"}, you can change the Visibility later.
+                  Your video is published{" "}
+                  {isPublic ? "publically" : "privately"}, you can change the
+                  Visibility later.
                 </h1>
                 <div className="flex justify-center items-center mt-4">
                   <PrimaryButton

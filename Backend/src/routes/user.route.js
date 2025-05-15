@@ -42,12 +42,12 @@ router.route("/logout").post(verifyJWT, logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/changePassword").post(verifyJWT,changeCurrentPassword)
 router.route("/getCurrentUser").get(verifyJWT,getCurrentUser)  // get request
-router.route("/updateAccountDetails").post(verifyJWT,updateAccountDetails)
+router.route("/updateAccountDetails").post(verifyJWT,upload.none(),updateAccountDetails)
 
 router.route("/:userId").get(getUserById)  // get request
 
-router.route("/updateUserAvatar").patch(verifyJWT,upload.single("avatar"),updateUserAvatar)
-router.route("/updateUserCoverImage").patch(verifyJWT,upload.single("coverImage"),updateUserCoverImage)
+router.route("/updateUserAvatar").patch(verifyJWT,upload.single("newAvatar"),updateUserAvatar)
+router.route("/updateUserCoverImage").patch(verifyJWT,upload.single("newCover"),updateUserCoverImage)
 
 router.route("/c/:username").get(verifyJWT,getUserChannel)
 router.route("/history").get(verifyJWT,getUserWatchHistory)

@@ -318,25 +318,31 @@ const getCurrentUser = asyncHandler(async(req,res) => {
 })
 
 const updateAccountDetails = asyncHandler(async(req,res) => {
-    const {fullname,email} = req.body;
+    console.log(req.body);
+    
+    const {fullName,email} = req.body;
 
-    const currentUserId = req.User?._id;
-    const currentUser = await user.findById(currentUserId).select(
-        "-password -refreshToken"
-    )
-
-
-    if(!(fullname || email)){
+    if(!(fullName || email)){
         throw new ApiError(400,"At least one field is required to update!");
     }
+    
+    const currentUserId = req.User?._id;
+    let currentUser;
 
-    if(fullname){
-        currentUser.fullname = fullname;
+    try {
+        currentUser = await user.findById(currentUserId).select(
+            "-password -refreshToken"
+        )
+    } catch (error) {
+        throw new ApiError(500, "Current User not found")
+    }
+
+    if(fullName){
+        currentUser.fullname = fullName;
     }
     if(email){
         currentUser.email = email;
     }
-
 
     await currentUser.save({validateBeforeSave: false});
 
@@ -347,12 +353,10 @@ const updateAccountDetails = asyncHandler(async(req,res) => {
 })
 
 const updateUserAvatar = asyncHandler(async(req,res) => {
-    console.log(req);
-    
-    const newAvatar = req.file?.path
+    const newAvatar = req.file.path;
 
     if(!newAvatar){
-        throw new ApiError(400,"Avatar file is missing!")
+        throw new ApiError(400,`Avatar file is missing!!! ${req.file}`)
     }
 
     const currentUserId = req.User?._id;
@@ -398,11 +402,10 @@ const updateUserAvatar = asyncHandler(async(req,res) => {
     )
 })
 
+const updateUserCoverImage = asyncHandler(async(req,res) => { 
+    const newCover = req.file.path;
 
-const updateUserCoverImage = asyncHandler(async(req,res) => {
-    const coverImageLocalPath = req.file?.path
-
-    if(!coverImageLocalPath){
+    if(!newCover){
         throw new ApiError(400,"coverImage file is missing!")
     }
 
@@ -430,7 +433,7 @@ const updateUserCoverImage = asyncHandler(async(req,res) => {
     }
 
 
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+    const coverImage = await uploadOnCloudinary(newCover);
 
     if(!coverImage.url){
         throw new ApiError(400,"Error while uploading coverImage!")

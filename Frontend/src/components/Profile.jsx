@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "../utils/PrimaryButton";
 import GeneralButton from "../utils/GeneralButton";
 import VideoListCard from "./VideoListCard";
@@ -7,41 +7,168 @@ import TweetCard from "./TweetCard";
 import ChannelCard from "./ChannelCard";
 import Dashboard from "./Dashboard";
 import api from "../utils/api";
-import { openTweetModal, openUploadVideoModal,openEditProfileModal } from "../redux/slices/modalSlice";
+import {
+  openTweetModal,
+  openUploadVideoModal,
+  openEditProfileModal,
+  openPlaylistModal
+} from "../redux/slices/modalSlice";
 import { FaUserEdit } from "react-icons/fa";
 import { GrPlayFill } from "react-icons/gr";
 import { TiPlus } from "react-icons/ti";
 import { RiPlayList2Fill } from "react-icons/ri";
 import { TbMessageReportFilled } from "react-icons/tb";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 function Profile() {
+  const userId = useParams();
   const dispatch = useDispatch();
+  const [subscribe, setSubscribe] = useState(false);
+  const [subscriberCount, setSubscriberCount] = useState(0);
   const [toggle, setToggle] = useState(1);
-  const [videoCount, setVideoCount] = useState(1);
   const [playlistCount, setPlaylistCount] = useState(1);
-  const [tweetCount, setTweetCount] = useState(1);
-  const [subscribedCount, setSubscribedCount] = useState(1);
+  const [subscribedChannels, setSubscribedChannels] = useState([]);
 
+  const [user, setUser] = useState({});
   const [videos, setVideos] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [tweets, setTweets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    // console.log(userId.id);
+    setToggle(1);
+    getUser();
+    fetchVideos();
+    fetchPlaylists();
+    checkSubscriptionStatus();
+    getSubscriberCount();
+    fetchSubscribedChannels();
+  }, [userId]);
+
+  // Fetch user data when video is loaded
+  const getUser = async () => {
+    try {
+      const response = await api.get(`/users/${userId.id}`, {});
+      setUser(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Fetch Videos from API
   const fetchVideos = async () => {
-    console.log(videos.length);
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get("/videos/getAllVideos", {
-        params: { page: 1, limit: 10 }, // Adjust pagination if needed
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await api.get(
+        `/videos/getAllVideosOfUser/${userId.id}`,
+        {
+          params: { page: 1, limit: 10 }, // Adjust pagination if needed
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       setVideos(response.data.data.videos);
-      console.log(videos.length);
     } catch (err) {
       setError("Failed to fetch videos");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPlaylists = async () => {
+    try {
+      const response = await api.get(`/playlist/getUserPlaylists/${userId.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      setPlaylists(response.data.data);
+    } catch (error) {
+      console.log(error);      
+    }
+  }
+
+  const fetchTweets = async () => {
+    try {
+      const response = await api.get(`/tweet/user/${userId.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      // console.log(response.data.data);
+      setTweets(response.data.data);
+    } catch (error) {
+      setError(error);
+      console.error(error);
+    }
+  };
+
+  const checkSubscriptionStatus = async () => {
+    try {
+      const response = await api.get(
+        `/subscription/isSubscribed/${userId.id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      // console.log(response.data.data);
+      setSubscribe(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const toggleSubscription = async (channelId) => {
+    try {
+      const response = await api.post(
+        `/subscription/${channelId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      // console.log(response);
+      if (subscribe) {
+        setSubscriberCount(subscriberCount - 1);
+      } else {
+        setSubscriberCount(subscriberCount + 1);
+      }
+      setSubscribe(!subscribe);
+      const updatedSubscribedChannels = subscribedChannels.filter(
+        (channel) => channel != channelId
+      );
+      setSubscribedChannels(updatedSubscribedChannels);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSubscriberCount = async () => {
+    try {
+      const response = await api.get(
+        `/subscription/subscriberCount/${userId.id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      // console.log(response.data.data);
+      setSubscriberCount(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchSubscribedChannels = async () => {
+    try {
+      const response = await api.get(`/subscription/subscriber/${userId.id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setSubscribedChannels(response.data.data);
+      // console.log(subscribedChannels);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -51,49 +178,72 @@ function Profile() {
         <div>
           <img
             className="h-32 md:h-52 w-full"
-            src="https://marketplace.canva.com/EAECJXaRRew/3/0/1600w/canva-do-what-is-right-starry-sky-facebook-cover-4SpKW5MtQl4.jpg"
+            src={user.coverImage}
             alt="Cover Image"
           />
         </div>
-        <div className="md:flex justify-between items-center px-5 md:px-10 mt-4">
+        <div className="flex  flex-col md:flex-row justify-between items-center px-5 md:px-10 mt-4">
           <div className="flex items-center gap-5">
             <img
               className="rounded-full w-24 h-24 md:w-32 md:h-32"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyCixyM2urliFC1w0DyNMJpBRMOXFizr3FR8aRIFfcDUGBzEaXcV6mt4gVWRqGAqqu4PI&usqp=CAU"
+              src={user.avatar}
               alt="Profile pic"
             />
             <div>
               <h1 className="text-white font-semibold text-lg md:text-2xl">
-                FullName
+                {user.fullname}
               </h1>
-              <h2 className="text-gray-400 text-xs md:text-sm">@Username</h2>
+              <h2 className="text-gray-400 text-xs md:text-sm">
+                @{user.username}
+              </h2>
               <h3 className="text-gray-400 text-xs md:text-sm">
-                600k Subscribers
+                {subscriberCount} Subscribers
               </h3>
             </div>
           </div>
-          <div className="hidden md:block">
-            <div className="flex flex-col items-end gap-2">
-              <PrimaryButton
-                onClick={() => dispatch(openUploadVideoModal())}
-                className="font-semibold flex items-start gap-1"
-              >
-                Upload Video
-                <TiPlus />
-              </PrimaryButton>
-              <PrimaryButton
-                onClick={() => dispatch(openTweetModal())}
-                className="font-semibold flex items-start gap-1"
-              >
-                Tweet
-                <TiPlus />
-              </PrimaryButton>
-              <GeneralButton onClick={() => dispatch(openEditProfileModal())} className="w-fit font-semibold flex items-center gap-2 rounded-md">
-                <FaUserEdit />
-                Edit
-              </GeneralButton>
+          {userId.id === localStorage.getItem("userId") ? (
+            <div className="hidden md:block">
+              <div className="md:w-60 lg:w-96 flex flex-wrap justify-end gap-2">
+                <PrimaryButton
+                  onClick={() => dispatch(openUploadVideoModal())}
+                  className="font-semibold flex items-start gap-1"
+                >
+                  Upload Video
+                  <TiPlus />
+                </PrimaryButton>
+                <PrimaryButton
+                  onClick={() => dispatch(openPlaylistModal())}
+                  className="font-semibold flex items-start gap-1"
+                >
+                  Create Playlist
+                  <TiPlus />
+                </PrimaryButton>
+                <PrimaryButton
+                  onClick={() => dispatch(openTweetModal())}
+                  className="font-semibold flex items-start gap-1"
+                >
+                  Tweet
+                  <TiPlus />
+                </PrimaryButton>
+                <GeneralButton
+                  onClick={() => dispatch(openEditProfileModal())}
+                  className="w-fit font-semibold flex items-center gap-2 rounded-md"
+                >
+                  <FaUserEdit />
+                  Edit
+                </GeneralButton>
+              </div>
             </div>
-          </div>
+          ) : (
+            <PrimaryButton
+              onClick={() => toggleSubscription(userId.id)}
+              className={`text-xl rounded-2xl px-4 mt-6 ${
+                subscribe ? "bg-stone-500 hover:bg-stone-600" : ""
+              }`}
+            >
+              {subscribe ? "Unsubscribe" : "Subscribe"}
+            </PrimaryButton>
+          )}
         </div>
         <hr className="md:hidden mt-4 md:mt-1 " />
         <div className="flex flex-col md:flex-row justify-between items-center mx-10 mt-10">
@@ -141,6 +291,7 @@ function Profile() {
           <button
             onClick={() => {
               setToggle(3);
+              fetchTweets();
             }}
             className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 3 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -148,26 +299,30 @@ function Profile() {
           >
             Tweets
           </button>
-          <button
-            onClick={() => {
-              setToggle(4);
-            }}
-            className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-              toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
-            }`}
-          >
-            Dashboard
-          </button>
-          <button
-            onClick={() => {
-              setToggle(5);
-            }}
-            className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-              toggle === 5 ? "md:bg-zinc-600 md:font-semibold" : ""
-            }`}
-          >
-            Subscribed
-          </button>
+          {userId.id === localStorage.getItem("userId") && (
+            <button
+              onClick={() => {
+                setToggle(4);
+              }}
+              className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
+              }`}
+            >
+              Dashboard
+            </button>
+          )}
+          {userId.id === localStorage.getItem("userId") && (
+            <button
+              onClick={() => {
+                setToggle(5);
+              }}
+              className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                toggle === 5 ? "md:bg-zinc-600 md:font-semibold" : ""
+              }`}
+            >
+              Subscribed
+            </button>
+          )}
         </div>
         <hr className="mt-4 md:mt-1 border-2" />
         <div className="hidden md:block">
@@ -187,14 +342,12 @@ function Profile() {
           )}
           {toggle === 1 && videos.length && (
             <div className="flex flex-col gap-5 justify-start mt-4 md:mx-0 lg:mx-10">
-              {
-                videos.map((video) => (
-                  <VideoListCard key={video._id} video={video} />
-                ))
-              }
+              {videos.map((video) => (
+                <VideoListCard key={video._id} video={video} />
+              ))}
             </div>
           )}
-          {toggle === 2 && playlistCount === 0 && (
+          {toggle === 2 && !playlists.length && (
             <div className="flex flex-col items-center">
               <div className="flex justify-center items-center w-12 h-12 bg-rose-400 rounded-full mt-10">
                 <RiPlayList2Fill size={24} />
@@ -207,20 +360,14 @@ function Profile() {
               </p>
             </div>
           )}
-          {toggle === 2 && playlistCount > 0 && (
+          {toggle === 2 && playlists.length && (
             <div className="flex flex-wrap justify-center gap-5 mt-4">
-              <PlaylistCard />
-              <PlaylistCard />
-              <PlaylistCard />
-              <PlaylistCard />
-              <PlaylistCard />
-              <PlaylistCard />
-              <PlaylistCard />
-              <PlaylistCard />
-              <PlaylistCard />
+              {playlists.map((playlist) => (
+                <PlaylistCard key={playlist._id} playlist={playlist} />
+              ))}
             </div>
           )}
-          {toggle === 3 && tweetCount === 0 && (
+          {toggle === 3 && !tweets.length && (
             <div className="flex flex-col items-center">
               <div className="flex justify-center items-center w-12 h-12 bg-rose-400 rounded-full mt-10">
                 <TbMessageReportFilled size={24} />
@@ -231,17 +378,19 @@ function Profile() {
               </p>
             </div>
           )}
-          {toggle === 3 && tweetCount > 0 && (
-            <div className="flex flex-wrap justify-center gap-5 mt-4 mr-5">
-              <TweetCard />
-              <TweetCard />
-              <TweetCard />
-              <TweetCard />
-              <TweetCard />
-              <TweetCard />
+          {toggle === 3 && tweets.length && (
+            <div className="flex-1 flex-wrap gap-5 w-full mt-4 ml-6">
+              {tweets.map((tweet) => (
+                <TweetCard key={tweet._id} tweet={tweet} />
+              ))}
             </div>
           )}
-          {toggle === 5 && subscribedCount === 0 && (
+          {toggle === 4 && (
+            <div className="mt-4 mx-4">
+              <Dashboard videos={videos} subscriberCount={subscriberCount} />
+            </div>
+          )}
+          {toggle === 5 && !subscribedChannels.length && (
             <div className="flex flex-col items-center">
               <div className="flex justify-center items-center w-12 h-12 bg-rose-400 rounded-full mt-10">
                 <TbMessageReportFilled size={24} />
@@ -254,22 +403,18 @@ function Profile() {
               </p>
             </div>
           )}
-          {toggle === 5 && subscribedCount > 0 && (
+          {toggle === 5 && subscribedChannels.length && (
             <div className="flex flex-col gap-5 mt-4 mx-4">
-              <ChannelCard />
-              <ChannelCard />
-              <ChannelCard />
-              <ChannelCard />
-              <ChannelCard />
-            </div>
-          )}
-          {toggle === 4 && (
-            <div className="mt-4 mx-4">
-              <Dashboard />
+              {subscribedChannels.map((channel) => (
+                <ChannelCard
+                  key={channel}
+                  channel={channel}
+                  toggleSubscription={toggleSubscription}
+                />
+              ))}
             </div>
           )}
         </div>
-        <div></div>
       </div>
     </div>
   );

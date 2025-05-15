@@ -1,11 +1,15 @@
 import React, { useState,useEffect } from "react";
 import api from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function VideoListCard(video) {
+  const navigate = useNavigate();
   const [user,setUser] = useState({})
+  const [publishedAt, setPublishedAt] = useState();
 
   useEffect(() => {
     getUser();
+    setPublishedAt(timeAgo(video.video.createdAt));
   }, [video?.video?.owner]);
 
   // Fetch user data when video is loaded
@@ -18,10 +22,37 @@ function VideoListCard(video) {
       }
   }
 
+  const timeAgo = (publishedDate) => {
+    const now = new Date();
+    const published = new Date(publishedDate);
+    const diffInSeconds = Math.floor((now - published) / 1000);
+  
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  
+    const divisions = [
+      { amount: 60, name: "seconds" },
+      { amount: 60, name: "minutes" },
+      { amount: 24, name: "hours" },
+      { amount: 7, name: "days" },
+      { amount: 4.34524, name: "weeks" },
+      { amount: 12, name: "months" },
+      { amount: Number.POSITIVE_INFINITY, name: "years" },
+    ];
+  
+    let duration = diffInSeconds;
+    for (let i = 0; i < divisions.length; i++) {
+      if (duration < divisions[i].amount) {
+        return rtf.format(-Math.floor(duration), divisions[i].name);
+      }
+      duration = duration / divisions[i].amount;
+    }
+    return "";
+  }
+
   return (
-    <div className="h-[170px] flex gap-2 rounded-md">
+    <div onClick={()=> navigate(`/VideoDetail/${video.video._id}`)} className="h-[170px] hover:bg-zinc-800 flex gap-2 rounded-md cursor-pointer">
       <img
-        className="rounded-md w-[45%]"
+        className="rounded-md w-[45%] m-1"
         src={video.video.thumbnail}
         alt="Thumbnail"
       />
@@ -39,7 +70,7 @@ function VideoListCard(video) {
             />
             <h1 className="text-gray-400 text-xs">{user.fullname}</h1>
           </div>
-          <h3 className="text-gray-400 text-xs mt-1">33k Views | 44 minutes ago</h3>
+          <h3 className="text-gray-400 text-xs mt-1">{video.video.views} Views | {publishedAt}</h3>
         </div>
       </div>
     </div>

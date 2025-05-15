@@ -132,6 +132,7 @@ function Register() {
         });
         dispatch(registrationSuccess(response.data));
         setRegistered(true);
+        dispatch(closeRegister())
       } catch (error) {
         dispatch(
           registrationFailure(

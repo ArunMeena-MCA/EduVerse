@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import {
@@ -10,10 +10,12 @@ import PrimaryButton from "../utils/PrimaryButton";
 import SecButton from "../utils/SecButton";
 import api from "../utils/api";
 import { closeLogin,openRegister } from "../redux/slices/modalSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.auth);
+  const navigate = useNavigate()
+  const dispatch = useDispatch();  
+  const { user, error, loading } = useSelector((state) => state.auth);
 
   const {
     register,
@@ -21,16 +23,27 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+    // useEffect(() => {
+    //   if (user) navigate("/Home");
+    // }, [user, navigate]);
+
+    const navigateToHome = () => {
+      navigate('/Home');
+    }
+
+  const onSubmit = async (data) => { 
     dispatch(loginStart());
 
     try {
       const response = await api.post("/users/login", data,
         {headers: { "Content-Type": "application/json" }}
-      ); // Uses baseURL automatically
-      dispatch(loginSuccess(response.data));
-      // console.log(response.data.data.accessToken)
+      );
+      // console.log(response.data.data.user._id)
+      dispatch(loginSuccess(response.data.data.user));
       localStorage.setItem("token", response.data.data.accessToken);
+      localStorage.setItem("userId", response.data.data.user._id);
+      dispatch(closeLogin())
+      navigateToHome();
     } catch (error) {
       dispatch(
         loginFailure(error.response?.data?.message || "Invalid credentials")
@@ -60,7 +73,6 @@ function Login() {
               className="rounded-md px-1 w-28 md:w-52"
               type="text"
               id="username"
-              name="username"
               placeholder="username"
             />
           </div>
@@ -79,7 +91,6 @@ function Login() {
               className="rounded-md px-1 w-28 md:w-52"
               type="password"
               id="password"
-              name="password"
               placeholder="password"
             />
           </div>

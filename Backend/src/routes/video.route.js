@@ -1,5 +1,6 @@
 import {Router} from "express";
 import { getAllVideos,
+    getAllVideosOfUser,
     getVideoById,
     publishVideo,
     updateVideo,
@@ -29,9 +30,10 @@ router.route("/publish").post(
 )
 
 router.route("/getAllVideos").get(getAllVideos);
+router.route("/getAllVideosOfUser/:userId").get(getAllVideosOfUser);
 router.route("/:videoId").get(getVideoById);
-router.route("/:videoId").patch(upload.single("thumbnail"),updateVideo);
-router.route("/:videoId").delete(deleteVideo);
+router.route("/update/:videoId").patch(upload.single("thumbnail"),updateVideo);
+router.route("/delete/:videoId").delete(deleteVideo);
 router.route("/toggle/publish/:videoId").patch(togglePublishStatus);
 router.route("/views/:videoId").post(incrementViews);
 
