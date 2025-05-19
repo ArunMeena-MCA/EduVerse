@@ -24,8 +24,8 @@ function Logout() {
         Are you sure you want to logout?
       </h2>
       <div className="flex flex-col gap-5">
-        <PrimaryButton onClick={handleLogout}>Logout</PrimaryButton>
-        <SecButton onClick={() => navigate("/Profile")}>Cancel</SecButton>
+        <PrimaryButton onClick={() => handleLogout()}>Logout</PrimaryButton>
+        <SecButton onClick={() => dispatch(closeLogout())}>Cancel</SecButton>
       </div>
     </div>
   );

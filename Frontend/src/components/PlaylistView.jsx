@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Playlist_Thumbnail from "../assets/Playlist_Thumbnail.png";
 import VideoListCard from "./VideoListCard";
-import { matchPath, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "../utils/api";
 import PrimaryButton from "../utils/PrimaryButton";
+import { useDispatch } from "react-redux";
+import { openAddVideoToPlaylistModal } from "../redux/slices/modalSlice";
+import GeneralButton from "../utils/GeneralButton";
 
 function PlaylistView() {
   const playlistId = useParams();
-  const location = useLocation();
+  const dispatch = useDispatch();
   const [playlist, setPlaylist] = useState({});
   const [user, setUser] = useState({});
   const [videos, setVideos] = useState([]);
   const [videoCount, setVideoCount] = useState(0);
   const [error, setError] = useState(null);
-  const [match,setMatch] = useState(false);
-
-  let thumbnail = Playlist_Thumbnail;
+  const [match, setMatch] = useState(false);
+  const [thumbnail, setThumbnail] = useState(Playlist_Thumbnail);
 
   useEffect(() => {
     getPlaylist();
@@ -43,7 +45,7 @@ function PlaylistView() {
 
       // Optionally, set the thumbnail of the first video
       if (videoData.length > 0) {
-        thumbnail = videoData[0].thumbnail;
+        setThumbnail(videoData[0].thumbnail);
       }
     } catch (error) {
       console.log(error);
@@ -64,8 +66,6 @@ function PlaylistView() {
       setVideoCount(playlistData.videos.length);
 
       if (playlistData.videos.length > 0) {
-        console.log("fetching");
-
         fetchVideos(playlistData.videos); // Fetch all videos
       }
     } catch (error) {
@@ -82,12 +82,27 @@ function PlaylistView() {
     }
   };
 
+  const removeVideo = async (videoId) => {
+    try {
+      const response = await api.delete(
+        `/playlist/${playlistId.id}/video/${videoId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      getPlaylist();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-wrap justify-center lg:justify-start">
-      <div className="mx-4 sm:mx-10 lg:mx-2 lg:w-[30%] my-6 flex flex-col justify-center items-center">
+      <div className="mx-4 sm:mx-10 lg:mx-2 lg:w-[30%] my-6 flex flex-col items-center">
         <div>
           <img
-            className="rounded-md lg:mx-2"
+            className="rounded-md"
             src={thumbnail}
             alt="Playlist Thumbnail"
           />
@@ -118,14 +133,32 @@ function PlaylistView() {
         </div>
         {match && (
           <div className="my-6 lg:mt-32 flex justify-center">
-            <PrimaryButton className="px-20">Add Video</PrimaryButton>
+            <PrimaryButton
+              onClick={() => dispatch(openAddVideoToPlaylistModal(playlist))}
+              className="px-20"
+            >
+              Add Video
+            </PrimaryButton>
           </div>
         )}
       </div>
       <div className="md:ml-6 my-6">
         <div className="flex flex-col gap-3 mx-4">
           {videos.map((video) => (
-            <VideoListCard key={video._id} video={video} />
+            <div
+              key={video._id}
+              className="flex flex-col md:flex-row justify-between md:items-center"
+            >
+              <VideoListCard video={video} />
+              {user._id === localStorage.getItem("userId") && (
+                <button
+                  onClick={() => removeVideo(video._id)}
+                  className="bg-gray-400 px-2 rounded-md font-semibold hover:text-red-500 hover:border hover:border-2 hover:border-red-500"
+                >
+                  Remove Video
+                </button>
+              )}
+            </div>
           ))}
         </div>
       </div>

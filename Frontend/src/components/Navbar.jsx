@@ -19,10 +19,6 @@ export default function Navbar() {
   const match = matchPath(`/Profile/${localStorage.getItem("userId")}`, location.pathname);
 
   const user = useSelector((state) => state.auth.user);
-
-  const handleLogout = () => {
-    dispatch(openLogout());
-  };
   
   return (
     <div>
@@ -59,7 +55,7 @@ export default function Navbar() {
               {match ? (
                 <div className="flex gap-2 md:gap-5">
                   <h2
-                    onClick={handleLogout}
+                    onClick={() => dispatch(openLogout())}
                     className="font-semibold hover:font-bold text-xs text-rose-500 md:text-lg cursor-pointer"
                   >
                     Logout

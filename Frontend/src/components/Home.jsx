@@ -30,35 +30,42 @@ function Home() {
     }
   };
 
-   const fetchPlaylists = async () => {
+  const fetchPlaylists = async () => {
     try {
       const response = await api.get("/playlist/getAllPlaylists", {
         params: { page: 1, limit: 10 }, // Adjust pagination if needed
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      // console.log(response.data.data.Playlists);      
+      });
+      // console.log(response.data.data.Playlists);
       setPlaylists(response.data.data.Playlists);
     } catch (error) {
-      console.log(error);      
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div>
       <div>
-        <h1 className="text-white font-semibold text-4xl text-center mt-8">Videos</h1>
+        <h1 className="text-white font-semibold text-4xl text-center mt-8">
+          Videos
+        </h1>
         <hr className="mt-2 border border-gray-600" />
         <div className="flex gap-5 flex-wrap justify-center">
           {videos.map((video) => (
             <VideoCard key={video._id} video={video} />
           ))}
         </div>
-        <h1 className="text-white font-semibold text-4xl text-center mt-8">Playlists</h1>
+        <h1 className="text-white font-semibold text-4xl text-center mt-8">
+          Playlists
+        </h1>
         <hr className="mt-2 border border-gray-600" />
         <div className="flex gap-5 flex-wrap justify-center">
-          {playlists.map((playlist) => (
-            <PlaylistCard key={playlist._id} playlist={playlist} />
-          ))}
+          {playlists.map(
+            (playlist) =>
+              playlist.videos.length > 0 && (
+                <PlaylistCard key={playlist._id} playlist={playlist} />
+              )
+          )}
         </div>
       </div>
     </div>

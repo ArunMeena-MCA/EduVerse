@@ -10,12 +10,12 @@ function PlaylistCard({playlist}) {
   const location = useLocation();
   const navigate = useNavigate();
   const [user,setUser] = useState({});
-  let thumbnail = Playlist_Thumbnail;
+  const [thumbnail, setThumbnail] = useState(Playlist_Thumbnail);
   const match = matchPath(`/Profile/${localStorage.getItem("userId")}`, location.pathname);
 
   useEffect(() => {
-    if(playlist.videos.length){
-       thumbnail = playlist.videos[0].thumbnail;
+    if(playlist.videos.length){      
+      fetchVideo(playlist.videos[0]); 
     }
     getUser();
   },[playlist.owner])
@@ -29,6 +29,18 @@ function PlaylistCard({playlist}) {
     }
   };
 
+  const fetchVideo = async (videoId) => {
+    try {
+      const response = await api.get(`/videos/${videoId}`,{
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })    
+      // setVideo(response.data.data);
+      setThumbnail(response.data.data.thumbnail);     
+    } catch (error) {
+      console.log(error);      
+    }
+  }
+
 
   return (
     <div onClick={() => navigate(`/playlistView/${playlist._id}`)} className="w-72 sm:w-80 lg:w-72 mt-4">
@@ -39,7 +51,7 @@ function PlaylistCard({playlist}) {
             src={thumbnail}
             alt="Playlist Thumbnail"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
           <div className="absolute inset-0 flex items-end justify-between m-2">
             <div className="w-[70%]">
               {/* <h1 className="text-white font-semibold">{playlist.name}</h1> */}
@@ -74,9 +86,6 @@ function PlaylistCard({playlist}) {
               <div>
                 <RiDeleteBinLine className="text-2xl hover:text-3xl" />
               </div>
-              {/* <div>
-                <FaPlus className="text-2xl hover:text-3xl text-rose-400"/> 
-              </div> */}
             </div>
           }
         </div>

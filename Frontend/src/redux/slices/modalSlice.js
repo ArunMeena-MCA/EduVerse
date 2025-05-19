@@ -9,7 +9,9 @@ const modalSlice = createSlice({
     isPlaylistModalOpen: false,
     isTweetModalOpen: false,
     isEditProfileModalOpen: false,
+    isAddVideoToPlaylistModalOpen: false,
     isLogoutOpen: false,
+    selectedPlaylist: null,
   },
   reducers: {
     openLogin: (state) => { state.isLoginOpen = true; },
@@ -24,6 +26,11 @@ const modalSlice = createSlice({
     closeTweetModal: (state) => { state.isTweetModalOpen = false; },
     openEditProfileModal: (state) => { state.isEditProfileModalOpen = true; },
     closeEditProfileModal: (state) => { state.isEditProfileModalOpen = false; },
+    openAddVideoToPlaylistModal: (state, action) => {
+      state.isAddVideoToPlaylistModalOpen = true;
+      state.selectedPlaylist = action.payload;
+    },
+    closeAddVideoToPlaylistModal: (state) => {state.isAddVideoToPlaylistModalOpen = false;},
     openLogout: (state) => { state.isLogoutOpen = true },
     closeLogout: (state) => { state.isLogoutOpen = false },
   }
@@ -36,6 +43,7 @@ export const {
   openPlaylistModal,closePlaylistModal,
   openTweetModal, closeTweetModal,
   openEditProfileModal, closeEditProfileModal,
+  openAddVideoToPlaylistModal, closeAddVideoToPlaylistModal,
   openLogout, closeLogout,
 } = modalSlice.actions;
 
