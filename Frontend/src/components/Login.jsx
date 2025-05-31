@@ -23,10 +23,6 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-    // useEffect(() => {
-    //   if (user) navigate("/Home");
-    // }, [user, navigate]);
-
     const navigateToHome = () => {
       navigate('/Home');
     }

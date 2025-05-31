@@ -5,8 +5,11 @@ import { useParams } from "react-router-dom";
 import api from "../utils/api";
 import PrimaryButton from "../utils/PrimaryButton";
 import { useDispatch } from "react-redux";
-import { openAddVideoToPlaylistModal } from "../redux/slices/modalSlice";
+import { openAddVideoToPlaylistModal, openDeletePlaylistModal, openEditPlaylistModal } from "../redux/slices/modalSlice";
+import { MdOutlineModeEditOutline } from "react-icons/md";
+import { RiDeleteBinLine } from "react-icons/ri";
 import GeneralButton from "../utils/GeneralButton";
+import SecButton from "../utils/SecButton";
 
 function PlaylistView() {
   const playlistId = useParams();
@@ -133,12 +136,19 @@ function PlaylistView() {
         </div>
         {match && (
           <div className="my-6 lg:mt-32 flex justify-center">
-            <PrimaryButton
-              onClick={() => dispatch(openAddVideoToPlaylistModal(playlist))}
-              className="px-20"
-            >
-              Add Video
-            </PrimaryButton>
+            <div>
+              <PrimaryButton
+                onClick={() => dispatch(openAddVideoToPlaylistModal(playlist))}
+                className="px-20"
+              >
+                Add Video
+              </PrimaryButton>
+              <div className="flex gap-3 justify-center mt-2">
+                <SecButton onClick={() => dispatch(openEditPlaylistModal(playlist))} className="px-4 flex items-center gap-1 text-black">Edit <MdOutlineModeEditOutline className="text-black"/></SecButton>
+                <SecButton onClick={() => dispatch(openDeletePlaylistModal(playlist._id))} className="flex items-center gap-1 text-black">Delete <RiDeleteBinLine className="text-black"/> </SecButton>
+              </div>
+
+            </div>
           </div>
         )}
       </div>

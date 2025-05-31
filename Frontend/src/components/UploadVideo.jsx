@@ -202,7 +202,7 @@ export default function UploadVideo() {
 
               {/* description Input */}
               <div className="mt-4">
-                <label className="text-white block">description*</label>
+                <label className="text-white block">Description*</label>
                 <textarea
                   className="w-full h-32 bg-gray-800 text-white px-2 py-2 mt-1 rounded-lg border border-stone-400 focus:ring-2 focus:ring-stone-400 outline-none resize-none"
                   placeholder="Enter video description"

@@ -2,73 +2,46 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { MdVerified } from "react-icons/md";
 import PrimaryButton from "../utils/PrimaryButton";
-import { closeEditVideoModal } from "../redux/slices/modalSlice";
+import { closeEditPlaylistModal } from "../redux/slices/modalSlice";
 import api from "../utils/api";
 
-export default function EditVideo({ videoId }) {
+export default function EditPlaylist({playlist}) {
   const dispatch = useDispatch();
-  const [thumbnail, setThumbnail] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  // const [isPublic, setIsPublic] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [Updated, setUpdated] = useState(false);
 
   useEffect(() => {
-    fetchVideo();
-  }, [videoId]);
+    setTitle(playlist.name)
+    setDescription(playlist.description)
+  },[playlist])
 
-  const fetchVideo = async () => {
+  const updatePlaylist = async () => {
+    setLoading(true)
     try {
-      const response = await api.get(`/videos/${videoId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setTitle(response.data.data.title);
-      setDescription(response.data.data.description);
-      // setIsPublic(response.data.data.ispublished);
+      const data = {
+        name : title,
+        description,
+      };
+      const response = await api.put(
+        `/playlist/updatePlaylist/${playlist._id}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token
+          },
+        }
+      );
+      setLoading(false);
+      setUpdated(true)
     } catch (error) {
       console.log(error);
+      setError("Playlist not updated, try again!")
+      setLoading(false)
     }
-  };
-
-  const updateVideo = async () => {
-    setLoading(true);
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setError("User not authenticated. Please log in.");
-      setLoading(false);
-      return;
-    }
-    const formdata = new FormData();
-    formdata.append("title", title);
-    formdata.append("description", description);    
-    // formdata.append("ispublished", isPublic);
-    if (thumbnail) formdata.append("thumbnail", thumbnail);
-
-    try {
-      const response = await api.patch(`/videos/update/${videoId}`, formdata, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`, // Include token
-        },
-      });
-      //   console.log(response);
-      setUpdated(true);
-    } catch (error) {
-      console.error("Error uploading video:", error);
-      if (error.response?.data?.message) {
-        setError(error.response?.data?.message);
-      } else {
-        setError("Failed to upload video");
-      }
-      dispatch(setLoading(false));
-      return;
-    }
-  };
-
-  const handleThumbnailUpload = (event) => {
-    setThumbnail(event.target.files[0]);
   };
 
   return (
@@ -76,7 +49,7 @@ export default function EditVideo({ videoId }) {
       <div className="max-h-[650px] md:w-fit w-72 overflow-y-auto border border-white rounded-xl pt-2 px-16 pb-6 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
         <button
           className="pl-[100%] text-white text-2xl hover:text-gray-300"
-          onClick={() => dispatch(closeEditVideoModal())}
+          onClick={() => dispatch(closeEditPlaylistModal())}
         >
           ✖
         </button>
@@ -89,12 +62,12 @@ export default function EditVideo({ videoId }) {
                   <MdVerified size={72} color="green" />
                 </div>
                 <h1 className="text-center text-white mt-8 font-bold text-xl">
-                  Video Updated
+                  Playlist Updated
                 </h1>
                 <div className="flex justify-center items-center mt-4">
                   <PrimaryButton
                     onClick={() => {
-                      dispatch(closeEditVideoModal());
+                      dispatch(closeEditPlaylistModal());
                     }}
                     className="text-4xl"
                   >
@@ -106,7 +79,7 @@ export default function EditVideo({ videoId }) {
           ) : (
             <div>
               <h2 className="text-2xl text-center text-white font-semibold mb-8">
-                EDIT VIDEO
+                EDIT PLAYLIST
               </h2>
 
               {/* Title Input */}
@@ -132,30 +105,6 @@ export default function EditVideo({ videoId }) {
                 />
               </div>
 
-              {/* Thumbnail Upload */}
-              <div className="mt-4">
-                <label className="text-white block font-medium">
-                  Thumbnail
-                </label>
-                <div className="flex items-center gap-2 mt-1">
-                  <label className="bg-rose-500 text-white text-lg font-semibold px-2 py-1 rounded-lg cursor-pointer hover:bg-rose-600">
-                    Choose File
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleThumbnailUpload}
-                    />
-                  </label>
-                  <span className="text-gray-400">
-                    {thumbnail ? thumbnail.name : "No file chosen"}
-                  </span>
-                </div>
-                <h1 className="text-[60%] mt-1 text-gray-500">
-                  Add a new image file to replace/add new thumbnail
-                </h1>
-              </div>              
-
               {/* Error Message */}
               {error && (
                 <p className="text-red-500 text-center text-md mt-4">{error}</p>
@@ -163,12 +112,12 @@ export default function EditVideo({ videoId }) {
               {/* Submit Button */}
               <div className="my-4">
                 <button
-                  onClick={() => updateVideo()}
+                  onClick={() => updatePlaylist()}
                   disabled={loading}
                   className="w-full text-white font-medium text-xl bg-rose-500 rounded-lg py-2 px-4 hover:bg-rose-600 shadow-md"
                   type="submit"
                 >
-                  {loading ? "Updating..." : "Update Video"}
+                  {loading ? "Updating..." : "Update Playlist"}
                 </button>
               </div>
             </div>

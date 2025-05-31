@@ -191,7 +191,7 @@ const updatePlaylist = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid playlist id");
     }
 
-    if (!name || !description) {
+    if (!name && !description) {
         throw new ApiError(400, "name or description are required");
     }
 

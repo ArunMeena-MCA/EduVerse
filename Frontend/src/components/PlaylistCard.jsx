@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { FaPlus } from "react-icons/fa";
 import { useLocation,matchPath, useNavigate } from "react-router-dom";
 import Playlist_Thumbnail from "../assets/Playlist_Thumbnail.png"
 import api from "../utils/api";
+import { useDispatch } from "react-redux";
+import { openDeletePlaylistModal, openEditPlaylistModal } from "../redux/slices/modalSlice";
 
 function PlaylistCard({playlist}) {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user,setUser] = useState({});
   const [thumbnail, setThumbnail] = useState(Playlist_Thumbnail);
   const match = matchPath(`/Profile/${localStorage.getItem("userId")}`, location.pathname);
@@ -43,9 +45,9 @@ function PlaylistCard({playlist}) {
 
 
   return (
-    <div onClick={() => navigate(`/playlistView/${playlist._id}`)} className="w-72 sm:w-80 lg:w-72 mt-4">
+    <div className="w-72 sm:w-80 lg:w-72 mt-4 cursor-pointer">
       <div className="w-full h-full">
-        <div className="relative">
+        <div onClick={() => navigate(`/playlistView/${playlist._id}`)} className="relative">
           <img
             className="rounded h-full w-full"
             src={thumbnail}
@@ -63,7 +65,7 @@ function PlaylistCard({playlist}) {
           </div>
         </div>
         <div className="flex gap-2 items-start justify-between items-center">
-          <div className="flex gap-2">
+          <div onClick={() => navigate(`/playlistView/${playlist._id}`)} className="flex gap-2">
             <img
               className="w-8 h-8 rounded-full mt-1"
               src={user.avatar}
@@ -81,10 +83,10 @@ function PlaylistCard({playlist}) {
             match && 
             <div className="flex items-center text-white gap-3 pr-1">
               <div>
-                <MdOutlineModeEditOutline className="text-2xl hover:text-3xl" />
+                <MdOutlineModeEditOutline onClick={() => dispatch(openEditPlaylistModal(playlist))}  className="text-2xl hover:text-3xl" />
               </div>
               <div>
-                <RiDeleteBinLine className="text-2xl hover:text-3xl" />
+                <RiDeleteBinLine onClick={() => dispatch(openDeletePlaylistModal(playlist._id))} className="text-2xl hover:text-3xl" />
               </div>
             </div>
           }

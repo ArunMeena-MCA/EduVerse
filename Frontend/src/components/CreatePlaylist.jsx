@@ -24,7 +24,6 @@ function CreatePlaylist() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
       setSuccess(true);
     } catch (error) {
       console.error(error);

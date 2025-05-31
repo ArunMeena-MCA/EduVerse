@@ -232,7 +232,7 @@ const updateVideo = asyncHandler(async (req, res) => {
         video.description = description;
     }
 
-    const thumbnailLocalPath = req.file.path;
+    const thumbnailLocalPath = req?.file?.path;
 
     if(thumbnailLocalPath){
         const oldThumbnailUrl = video.thumbnail;

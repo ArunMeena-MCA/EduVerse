@@ -6,6 +6,7 @@ import PlaylistCard from "./PlaylistCard";
 import TweetCard from "./TweetCard";
 import ChannelCard from "./ChannelCard";
 import Dashboard from "./Dashboard";
+import Sidebar from "./Sidebar";
 import api from "../utils/api";
 import {
   openTweetModal,
@@ -25,8 +26,7 @@ function Profile() {
   const dispatch = useDispatch();
   const [subscribe, setSubscribe] = useState(false);
   const [subscriberCount, setSubscriberCount] = useState(0);
-  const [toggle, setToggle] = useState(1);
-  const [playlistCount, setPlaylistCount] = useState(1);
+  const [toggle, setToggle] = useState(0);
   const [subscribedChannels, setSubscribedChannels] = useState([]);
 
   const [user, setUser] = useState({});
@@ -37,8 +37,6 @@ function Profile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // console.log(userId.id);
-    setToggle(1);
     getUser();
     fetchVideos();
     fetchPlaylists();
@@ -173,8 +171,11 @@ function Profile() {
   };
 
   return (
-    <div>
-      <div className="h-full md:ml-60">
+    <div className="flex">
+      <div className="w-[20%] hidden md:block">
+        <Sidebar userId={userId} toggle={toggle} setToggle={setToggle}/>
+      </div>
+      <div className="h-full w-full md:w-[80%]">
         <div>
           <img
             className="h-32 md:h-52 w-full"
