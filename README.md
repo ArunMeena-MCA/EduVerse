@@ -1,26 +1,45 @@
-<h1>🎬 MeTube - A Full-Stack Video Sharing Platform </h1>
-MeTube is a full-fledged MERN stack video sharing application inspired by YouTube. It allows users to upload, browse, like/dislike, comment, and subscribe to content, offering a seamless and interactive video experience.
+<h1>🎬 MeTube – Full Stack Video Hosting Platform</h1>
+MeTube is a full-stack video hosting application inspired by YouTube, built using the MERN stack (MongoDB, Express, React, Node.js). It supports features such as video upload, like/dislike, comments, replies, subscriptions, and secure authentication – everything you expect from a modern video-sharing platform.
+
+📌 Project Architecture Diagram
 
 <h2>🚀 Features</h2>
+<h3>✅ Common </h3>
+JWT-based Authentication (Access & Refresh Tokens)
 
-🔐 JWT-based authentication with refresh token system
+Bcrypt password hashing
 
-🎥 Video upload & streaming
+Responsive and interactive UI
 
-❤️ Like, dislike & subscribe functionality
+RESTful API design
 
-💬 Commenting system with replies
+Modular and scalable folder structure
 
-📦 Built with scalable folder structure
+<h3>🎥 Frontend (React + Redux)</h3>
+Login, Signup
 
-📱 Responsive React frontend
+Upload video with preview
 
-<h2>🛠️ Tech Stack </h2>
+Like/Dislike videos
 
-Frontend: React, Redux Toolkit, Tailwind CSS
+Comment and reply threads
 
-Backend: Node.js, Express.js, MongoDB, Mongoose
+Subscribe/Unsubscribe to channels
 
-Authentication: JWT, bcrypt
+Notification system
 
-Storage: Local (can be extended to AWS S3 or Cloudinary)
+Dynamic routing with React Router
+
+<h3>🛠 Backend (Node.js + Express + MongoDB)</h3>
+User authentication & authorization
+
+Video upload, metadata storage
+
+Like/dislike tracking per user
+
+Comments and replies with nesting
+
+Channel subscription logic
+
+Middleware for validation and errors
+
