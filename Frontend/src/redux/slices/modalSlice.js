@@ -20,7 +20,8 @@ const modalSlice = createSlice({
     playlistIdToDelete: null,    
     isDeleteVideoModalOpen: false,
     videoIdToDelete: null,
-    isNotificationModalOpen: false,    
+    isNotificationModalOpen: false, 
+    isSearchingModalOpen: false,   
   },
   reducers: {
     openLogin: (state) => { state.isLoginOpen = true; },
@@ -50,6 +51,8 @@ const modalSlice = createSlice({
     closeDeleteVideoModal: (state) => {state.isDeleteVideoModalOpen = false},
     openNotificationModal: (state) => {state.isNotificationModalOpen = true; },
     closeNotificationModal: (state) => {state.isNotificationModalOpen = false; },
+    openSearchingModal: (state,action) => { state.isSearchingModalOpen = true; state.searchResults = action.payload; },
+    closeSearchingModal: (state) => { state.isSearchingModalOpen = false; },
     openLogout: (state) => { state.isLogoutOpen = true },
     closeLogout: (state) => { state.isLogoutOpen = false },
   }
@@ -68,6 +71,7 @@ export const {
   openDeletePlaylistModal,closeDeletePlaylistModal,
   openDeleteVideoModal,closeDeleteVideoModal,
   openNotificationModal,closeNotificationModal,
+  openSearchingModal, closeSearchingModal,
   openLogout, closeLogout,
 } = modalSlice.actions;
 

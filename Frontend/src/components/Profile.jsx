@@ -37,6 +37,7 @@ function Profile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setToggle(0)
     getUser();
     fetchVideos();
     fetchPlaylists();
@@ -132,12 +133,14 @@ function Profile() {
         setSubscriberCount(subscriberCount - 1);
       } else {
         setSubscriberCount(subscriberCount + 1);
+        triggerNotification();
       }
       setSubscribe(!subscribe);
       const updatedSubscribedChannels = subscribedChannels.filter(
         (channel) => channel != channelId
       );
       setSubscribedChannels(updatedSubscribedChannels);
+
     } catch (error) {
       console.log(error);
     }
@@ -169,6 +172,22 @@ function Profile() {
       console.log(error);
     }
   };
+
+  const triggerNotification = async () => {
+    try {
+      const response = await api.post('/notifications/createNotification', {
+        recipientId: userId.id,
+        senderId: localStorage.getItem("userId"),
+        type: "subscribe",
+        message: "subscribed to your channel.",
+        link: `/Profile/${localStorage.getItem("userId")}`,
+      },{
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="flex">

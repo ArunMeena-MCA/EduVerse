@@ -1,18 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { BiSolidLike } from "react-icons/bi";
 import api from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function CommentCard(comment) {
+  const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [likeToggle, setLikeToggle] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [likedComment, setLikedComment] = useState([]);
+  const [publishedAt, setPublishedAt] = useState();
+  
 
   useEffect(() => {
     if (comment?.comment?.owner) {
       getUser(comment.comment.owner);
       getLikeCount();
+      getLikedComments();
+      setPublishedAt(timeAgo(comment.comment.createdAt));
     }
   }, [comment?.comment?.owner]);
+
+  // This runs AFTER likedComment or Comment changes
+  useEffect(() => {
+    if (comment.comment._id && likedComment.length > 0) {
+      setLikeStatus();
+    }
+  }, [comment.comment._id, likedComment]);
 
   // Fetch user data when comment is loaded
   const getUser = async (userId) => {
@@ -38,6 +52,7 @@ function CommentCard(comment) {
       if (likeToggle) {
         setLikeCount(likeCount - 1);
       } else {
+        triggerNotification();
         setLikeCount(likeCount + 1);
       }
       setLikeToggle(!likeToggle);
@@ -61,27 +76,99 @@ function CommentCard(comment) {
     }
   };
 
+  const getLikedComments = async () => {
+    try {
+      const response = await api.get("/likes/liked-comments", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setLikedComment(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setLikeStatus = () => {
+    if (likedComment.length > 0) {
+      const isLiked = likedComment.some((v) => v.comment === comment.comment._id);   
+      setLikeToggle(isLiked);  
+    } else {
+      setLike(false);
+    }
+  };
+
+  const triggerNotification = async () => {
+    if (user._id === localStorage.getItem("userId")) {
+      return; // Don't send notification if the user is liking their own tweet
+    }
+    try {
+      const response = await api.post(
+        "/notifications/createNotification",
+        {
+          recipientId: user._id,
+          senderId: localStorage.getItem("userId"),
+          type: "like",
+          message: `liked "${comment.comment.content}"`,
+          link: `/VideoDetail/${comment.comment.video}`,
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const timeAgo = (publishedDate) => {
+    const now = new Date();
+    const published = new Date(publishedDate);
+    const diffInSeconds = Math.floor((now - published) / 1000);
+  
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  
+    const divisions = [
+      { amount: 60, name: "seconds" },
+      { amount: 60, name: "minutes" },
+      { amount: 24, name: "hours" },
+      { amount: 7, name: "days" },
+      { amount: 4.34524, name: "weeks" },
+      { amount: 12, name: "months" },
+      { amount: Number.POSITIVE_INFINITY, name: "years" },
+    ];
+  
+    let duration = diffInSeconds;
+    for (let i = 0; i < divisions.length; i++) {
+      if (duration < divisions[i].amount) {
+        return rtf.format(-Math.floor(duration), divisions[i].name);
+      }
+      duration = duration / divisions[i].amount;
+    }
+    return "";
+  }
+
   return (
     <div>
-      <div className="flex items-start mt-4 gap-3">
+      <div className="flex items-start mt-4 gap-3 cursor-pointer">
         <img
           className="w-10 h-10 rounded-full"
           src={user.avatar}
           alt="Profile pic"
         />
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-md text-white font-semibold">
-              {user.fullname}
-            </h1>
-            <h2 className="text-xs text-gray-400">08 hours ago</h2>
+          <div onClick={() => navigate(`/Profile/${user._id}`)}>
+            <div className="flex items-center gap-3">
+              <h1 className="text-md text-white font-semibold">
+                {user.fullname}
+              </h1>
+              <h2 className="text-xs text-gray-400">{publishedAt}</h2>
+            </div>
+            <div>
+              <h2 className="text-xs text-gray-500">@{user.username}</h2>
+            </div>
+            <p className="text-white text-sm line-clamp-2 mt-1">
+              {comment.comment.content}
+            </p>
           </div>
-          <div>
-            <h2 className="text-xs text-gray-500">@{user.username}</h2>
-          </div>
-          <p className="text-white text-sm line-clamp-2 mt-1">
-            {comment.comment.content}
-          </p>
           <div className="flex gap-3 mt-2">
             <h1 className="text-xs text-gray-500 border border-gray-500 px-1 items-end rounded-md flex gap-1">
               {likeCount}{" "}

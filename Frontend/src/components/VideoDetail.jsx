@@ -16,6 +16,7 @@ function VideoDetail() {
   const [likeCount, setLikeCount] = useState(0);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
   const [likedVideos, setLikedVideos] = useState([]);
   const [publishedAt, setPublishedAt] = useState();
   const [subscribe, setSubscribe] = useState(false);
@@ -85,6 +86,7 @@ function VideoDetail() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       // console.log(response);
+      setCommentCount(response.data.data.length);
       setComments(response.data.data);
     } catch (error) {
       console.log(error);
@@ -138,6 +140,7 @@ function VideoDetail() {
       if (like) {
         setLikeCount(likeCount - 1);
       } else {
+        triggerNotification();
         setLikeCount(likeCount + 1);
       }
       setLike(!like);
@@ -145,6 +148,25 @@ function VideoDetail() {
       console.error(error);
     }
   };
+
+  const triggerNotification = async () => {
+    if (user._id === localStorage.getItem("userId")) {
+      return; // Don't send notification if the user is liking their own video
+    }
+    try {
+      const response = await api.post('/notifications/createNotification', {
+        recipientId: user._id,
+        senderId: localStorage.getItem("userId"),
+        type: "like",
+        message: `liked your video "${video.title}"`,
+        link: `/VideoDetail/${videoId}`
+      },{
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const getLikeCount = async () => {
     try {
@@ -338,7 +360,7 @@ function VideoDetail() {
         </div>
         <div className="mt-4 border rounded-lg px-2 py-4">
           <h1 className="text-xl text-white font-semibold px-2">
-            323 Comments
+            {commentCount} Comments
           </h1>
           <div className="flex items-center gap-3 mt-4 mx-4">
             <input

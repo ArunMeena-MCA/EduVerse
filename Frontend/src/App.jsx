@@ -15,7 +15,10 @@ import DeleteVideo from "./components/DeleteVideo";
 import Notification from "./components/Notification";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, Upload } from "lucide-react";
+import { closeSearchingModal } from "./redux/slices/modalSlice";
+import SearchBox from "./components/SearchBox";
 function App() {
+  const dispatch = useDispatch();
   const {
     isLoginOpen,
     isRegisterationOpen,
@@ -33,12 +36,17 @@ function App() {
     playlistIdToDelete,
     isDeleteVideoModalOpen,
     videoIdToDelete,
-    isLogoutOpen,
     isNotificationModalOpen,
+    isSearchingModalOpen,
+    searchResults,
+    isLogoutOpen,
   } = useSelector((state) => state.modal);
 
   return (
-    <div className="min-h-screen min-w-screen bg-zinc-900">
+    <div
+      onClick={() => dispatch(closeSearchingModal())}
+      className="min-h-screen min-w-screen bg-zinc-900"
+    >
       <div
         className={`${
           isLoginOpen ||
@@ -59,6 +67,12 @@ function App() {
       >
         <Navbar />
       </div>
+
+      {isSearchingModalOpen && (
+        <div className="fixed inset-y-16 inset-x-0 flex justify-center">
+          <SearchBox videos={searchResults} />
+        </div>
+      )}
 
       {isLoginOpen && (
         <div className="fixed inset-0 flex items-center justify-center">

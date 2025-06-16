@@ -6,11 +6,13 @@ function TweetCard(tweet) {
   const [user, setUser] = useState({});
   const [likeCount, setLikeCount] = useState(0);
   const [likedTweet, setLikedTweet] = useState([]);
+  const [publishedAt, setPublishedAt] = useState();
 
   useEffect(() => {
     getUser();
     getLikeCount();
     getLikedTweet();
+    setPublishedAt(timeAgo(tweet.tweet.createdAt));
   }, [tweet.tweet.owner]);
 
   // This runs AFTER likedTweet or Tweet changes
@@ -45,6 +47,7 @@ function TweetCard(tweet) {
       if (like) {
         setLikeCount(likeCount - 1);
       } else {
+        triggerNotification();
         setLikeCount(likeCount + 1);
       }
       setLike(!like);
@@ -52,6 +55,25 @@ function TweetCard(tweet) {
       console.error(error);
     }
   };
+
+  const triggerNotification = async () => {
+    if(user._id === localStorage.getItem("userId")) {
+      return; // Don't send notification if the user is liking their own tweet
+    }
+    try {
+      const response = await api.post('/notifications/createNotification', {
+        recipientId: user._id,
+        senderId: localStorage.getItem("userId"),
+        type: "like",
+        message: `liked "${tweet.tweet.content}"`,
+        link: ""
+      },{
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const getLikeCount = async () => {
     try {
@@ -74,7 +96,6 @@ function TweetCard(tweet) {
       const response = await api.get("/likes/liked-tweets", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      // console.log(response.data.data);
       setLikedTweet(response.data.data);
     } catch (error) {
       console.log(error);
@@ -110,11 +131,38 @@ function TweetCard(tweet) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
+
+  const timeAgo = (publishedDate) => {
+    const now = new Date();
+    const published = new Date(publishedDate);
+    const diffInSeconds = Math.floor((now - published) / 1000);
+  
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  
+    const divisions = [
+      { amount: 60, name: "seconds" },
+      { amount: 60, name: "minutes" },
+      { amount: 24, name: "hours" },
+      { amount: 7, name: "days" },
+      { amount: 4.34524, name: "weeks" },
+      { amount: 12, name: "months" },
+      { amount: Number.POSITIVE_INFINITY, name: "years" },
+    ];
+  
+    let duration = diffInSeconds;
+    for (let i = 0; i < divisions.length; i++) {
+      if (duration < divisions[i].amount) {
+        return rtf.format(-Math.floor(duration), divisions[i].name);
+      }
+      duration = duration / divisions[i].amount;
+    }
+    return "";
+  }
 
   return (
     <div>
@@ -127,7 +175,7 @@ function TweetCard(tweet) {
         <div>
           <div className="flex gap-5 items-center">
             <h1 className="font-semibold text-white">{user.fullname}</h1>
-            <h3 className="text-gray-400 text-xs">5 hours ago</h3>
+            <h3 className="text-gray-400 text-xs">{publishedAt}</h3>
           </div>
           <p className="text-white line-clamp-2 text-sm mt-1">
             {tweet.tweet.content}
@@ -142,18 +190,23 @@ function TweetCard(tweet) {
                 }`}
               />
             </h1>
-            <h1
-              onClick={() => editTweet(tweet)}
-              className="text-white hover:text-red-500 font-semibold cursor-pointer"
-            >
-              Edit
-            </h1>
-            <h1
-              onClick={() => deleteTweet(tweet)}
-              className="text-white hover:text-red-500 font-semibold cursor-pointer"
-            >
-              Delete
-            </h1>
+            {
+              tweet.tweet.owner === localStorage.getItem("userId") && (
+               <div className="flex gap-3">
+                 <h1
+                  onClick={() => editTweet(tweet)}
+                  className="text-white hover:text-red-500 font-semibold cursor-pointer"
+                >
+                  Edit
+                </h1>
+                <h1
+                  onClick={() => deleteTweet(tweet)}
+                  className="text-white hover:text-red-500 font-semibold cursor-pointer"
+                >
+                  Delete
+                </h1>
+              </div>
+            )}
           </div>
         </div>
       </div>

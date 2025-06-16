@@ -18,7 +18,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
             throw new ApiError(401, "Invalid Access Token")
         }
 
-        req.User = User;
+        req.User = User;        
         next()
     } catch (error) {
         throw new ApiError(401, error?.message || "Invalid access token")

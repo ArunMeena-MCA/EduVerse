@@ -22,7 +22,9 @@ import commentRouter from './routes/comment.route.js'
 import tweetRouter from './routes/tweet.route.js'
 import subscriptionRouter from "./routes/subscription.route.js"
 import likesRouter from "./routes/likes.route.js"
-import DashboardRouter from "./routes/dashboard.route.js"
+import dashboardRouter from "./routes/dashboard.route.js"
+import notificationRouter from "./routes/notification.route.js"
+import searchRouter from "./routes/search.route.js"
 
 // routes declaration 
 app.use("/api/v1/users",userRouter)
@@ -32,7 +34,8 @@ app.use("/api/v1/comment",commentRouter)
 app.use("/api/v1/tweet",tweetRouter)
 app.use("/api/v1/subscription",subscriptionRouter)
 app.use("/api/v1/likes", likesRouter)
-app.use("/api/v1/dashboard", DashboardRouter)
-
+app.use("/api/v1/dashboard", dashboardRouter)
+app.use("/api/v1/notifications", notificationRouter)
+app.use("/api/v1/search", searchRouter)
 
 export { app }   

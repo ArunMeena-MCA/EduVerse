@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Routing from "../utils/Routing";
 import MeTube from "../assets/MeTube.png";
-import Notification from "./Notification";
 import { useLocation, useNavigate, matchPath } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,17 +10,38 @@ import {
   openLogout,
   openNotificationModal,
   closeNotificationModal,
+  openSearchingModal,
+  closeSearchingModal,
 } from "../redux/slices/modalSlice";
 import { IoNotifications } from "react-icons/io5";
 import { GoDotFill } from "react-icons/go";
+import api from "../utils/api";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isNotificationModalOpen } = useSelector((state) => state.modal);
+  const { isNotificationModalOpen, isSearchingModalOpen } = useSelector((state) => state.modal);
   const [search, setSearch] = useState("");
   const [notificationBox, setNotificationBox] = useState(false);
+  const [notificationFlag, setNotificationFlag] = useState(false);
+
+  useEffect(() => {
+    checkNotification();
+  })
+
+  const checkNotification = async () => {
+    try {
+      const response = await api.get('/notifications/unread-count',{
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      })
+      if(response.data.data > 0){
+        setNotificationFlag(true);
+      }
+    } catch (error) {
+      console.log(error);      
+    }
+  }
 
   const match = matchPath(
     `/Profile/${localStorage.getItem("userId")}`,
@@ -36,8 +56,26 @@ export default function Navbar() {
     }
     else{
       dispatch(openNotificationModal());
+      setNotificationFlag(false);
     }
     setNotificationBox(!notificationBox);
+  }
+
+  const handleSearch = async (value) => {
+    setSearch(value);
+    dispatch(closeSearchingModal())
+    if(!value) {
+      return;
+    }
+    try {
+      const response = await api.get(`/search/videos?query=${value}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      // console.log(response.data.data);
+      dispatch(openSearchingModal(response.data.data));      
+    } catch (error) {
+      console.log(error);     
+    }
   }
 
   return (
@@ -64,7 +102,7 @@ export default function Navbar() {
               placeholder="Search..."
               className="w-full px-4 py-1 md:py-2 text-white bg-transparent border-none outline-none placeholder-gray-400"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
             />
             <Search className="absolute right-4 text-gray-400 cursor-pointer" />
           </div>
@@ -73,12 +111,14 @@ export default function Navbar() {
           {user && location.pathname !== "/" ? (
             <div className="flex items-center">
               <div className="flex">
-                <IoNotifications className="size-4 sm:size-6 md:size-8 mr-2" />
-                <GoDotFill
-                  onClick={() => handleNotification()}
-                  // size={20}
-                  className="size-3 sm:size-5 text-red-500 absolute ml-[1%] cursor-pointer"
-                />
+                <IoNotifications onClick={() => handleNotification()} className="size-4 sm:size-6 md:size-8 mr-2" />
+                {notificationFlag && (
+                  <GoDotFill
+                    onClick={() => handleNotification()}
+                    // size={20}
+                    className="size-3 sm:size-5 text-red-500 absolute ml-[1%] cursor-pointer"
+                  />
+                )}
               </div>
               {match ? (
                 <div className="flex gap-2 md:gap-5">
@@ -125,7 +165,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      <div className={`${isNotificationModalOpen ? "blur-sm" : ""}`}>
+      <div className={`${isNotificationModalOpen || isSearchingModalOpen ? "blur-sm" : ""}`}>
         <Routing />
       </div>
     </div>
