@@ -4,7 +4,6 @@ import api from '../utils/api';
 import { MdPersonRemove } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
-
 function ChannelCard({channel,toggleSubscription}) {
   const navigate = useNavigate();
   const [user, setUser] = useState({});

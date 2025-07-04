@@ -19,6 +19,7 @@ import SearchBox from "./components/SearchBox";
 import DeleteTweet from "./components/DeleteTweet";
 import DeleteComment from "./components/DeleteComment";
 import EditTweet from "./components/EditTweet";
+import Footer from "./components/Footer";
 function App() {
   const dispatch = useDispatch();
   const {
@@ -43,7 +44,7 @@ function App() {
     isDeleteTweetModalOpen,
     TweetIdToDelete,
     isDeleteCommentModalOpen,
-    CommentIdToDelete,    
+    CommentIdToDelete,
     isNotificationModalOpen,
     isSearchingModalOpen,
     searchResults,
@@ -53,10 +54,11 @@ function App() {
   return (
     <div
       onClick={() => dispatch(closeSearchingModal())}
-      className="min-h-screen min-w-screen bg-zinc-900"
-    >
+      className="min-h-screen flex flex-col bg-zinc-900"
+    >   
+      {/* Main Content */}
       <div
-        className={`${
+        className={`flex-grow ${
           isLoginOpen ||
           isRegisterationOpen ||
           isUploadVideoModalOpen ||
@@ -78,7 +80,29 @@ function App() {
       >
         <Navbar />
       </div>
+      <div className={`${
+          isLoginOpen ||
+          isRegisterationOpen ||
+          isUploadVideoModalOpen ||
+          isPlaylistModalOpen ||
+          isTweetModalOpen ||
+          isEditProfileModalOpen ||
+          isAddVideoToPlaylistModalOpen ||
+          isEditVideoModalOpen ||
+          isEditTweetModalOpen ||
+          isEditPlaylistModalOpen ||
+          isDeletePlaylistModalOpen ||
+          isDeleteVideoModalOpen ||
+          isDeleteTweetModalOpen ||
+          isDeleteCommentModalOpen ||
+          isLogoutOpen
+            ? "blur-sm"
+            : ""
+        }`}>
+        <Footer />
+      </div>
 
+      {/* Modals */}
       {isSearchingModalOpen && (
         <div className="fixed inset-y-16 inset-x-0 flex justify-center">
           <SearchBox videos={searchResults} />
@@ -90,13 +114,11 @@ function App() {
           <Login />
         </div>
       )}
-
       {isLogoutOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <Logout />
         </div>
       )}
-
       {isRegisterationOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <Register />
@@ -107,75 +129,63 @@ function App() {
           <UploadVideo />
         </div>
       )}
-
       {isPlaylistModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <CreatePlaylist />
         </div>
       )}
-
       {isTweetModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <PostTweet />
         </div>
       )}
-
       {isEditProfileModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <EditProfile />
         </div>
       )}
-
       {isAddVideoToPlaylistModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <AddVideoToPlaylist playlist={selectedPlaylist} />
         </div>
       )}
-
       {isEditVideoModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <EditVideo videoId={videoIdToEdit} />
         </div>
       )}
-
       {isEditTweetModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <EditTweet tweetId={tweetToEdit} />
         </div>
       )}
-
       {isEditPlaylistModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <EditPlaylist playlist={playlistToEdit} />
         </div>
       )}
-
       {isDeleteVideoModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <DeleteVideo payload={videoIdToDelete} />
         </div>
       )}
-
       {isDeleteTweetModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <DeleteTweet payload={TweetIdToDelete} />
         </div>
       )}
-
       {isDeleteCommentModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <DeleteComment payload={CommentIdToDelete} />
         </div>
       )}
-
       {isDeletePlaylistModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <DeletePlaylist playlistId={playlistIdToDelete} />
         </div>
       )}
-
       {isNotificationModalOpen && (
-        <div className="fixed inset-0 flex justify-end ">
+        <div className="fixed inset-0 flex justify-end">
           <Notification />
         </div>
       )}

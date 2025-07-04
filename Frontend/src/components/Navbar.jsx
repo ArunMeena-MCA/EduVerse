@@ -16,6 +16,7 @@ import {
 import { IoNotifications } from "react-icons/io5";
 import { GoDotFill } from "react-icons/go";
 import api from "../utils/api";
+import Footer from "./Footer";
 
 export default function Navbar() {
   const navigate = useNavigate();

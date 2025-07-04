@@ -10,7 +10,8 @@ import PlaylistList from '../components/PlaylistList'
 import TweetList from '../components/TweetList'
 import MiniDashboard from '../components/MiniDashboard'
 import SubscribedList from '../components/SubscribedList'
-
+import PrivacyPolicy from '../components/PrivacyPolicy'
+import TermsAndConditions from '../components/TermsAndConditions'
 function Routing() {
   return (
     <Routes>
@@ -24,6 +25,8 @@ function Routing() {
         <Route path='/TweetList' element={<TweetList/>} />
         <Route path='/MiniDashboard' element={<MiniDashboard/>} /> 
         <Route path='/SubscribedList' element={<SubscribedList/>} /> 
+        <Route path='/PrivacyPolicy' element={<PrivacyPolicy />} />
+        <Route path='/TermsAndConditions' element={<TermsAndConditions />} />
     </Routes>
   )
 }
