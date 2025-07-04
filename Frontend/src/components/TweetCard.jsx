@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { BiSolidLike } from "react-icons/bi";
 import api from "../utils/api";
+import { openDeleteTweetModal, openEditTweetModal } from "../redux/slices/modalSlice";
+import { useDispatch } from "react-redux";
 function TweetCard(tweet) {
+  const dispatch = useDispatch();
   const [like, setLike] = useState(false);
   const [user, setUser] = useState({});
   const [likeCount, setLikeCount] = useState(0);
@@ -111,32 +114,6 @@ function TweetCard(tweet) {
     }
   };
 
-  const editTweet = async (tweet) => {
-    try {
-      const response = await api.post(`/tweet/${tweet.tweet._id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const deleteTweet = async (tweet) => {
-    try {
-      const response = await api.delete(`/tweet/${tweet.tweet._id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      // console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const timeAgo = (publishedDate) => {
     const now = new Date();
     const published = new Date(publishedDate);
@@ -194,13 +171,13 @@ function TweetCard(tweet) {
               tweet.tweet.owner === localStorage.getItem("userId") && (
                <div className="flex gap-3">
                  <h1
-                  onClick={() => editTweet(tweet)}
+                  onClick={() => dispatch(openEditTweetModal(tweet.tweet))}
                   className="text-white hover:text-red-500 font-semibold cursor-pointer"
                 >
                   Edit
                 </h1>
                 <h1
-                  onClick={() => deleteTweet(tweet)}
+                  onClick={() => dispatch(openDeleteTweetModal(tweet.tweet._id))}
                   className="text-white hover:text-red-500 font-semibold cursor-pointer"
                 >
                   Delete

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { BiSolidLike } from "react-icons/bi";
 import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { openDeleteCommentModal } from "../redux/slices/modalSlice";
 
-function CommentCard(comment) {
+function CommentCard({comment,onDelete}) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [likeToggle, setLikeToggle] = useState(false);
@@ -12,21 +15,21 @@ function CommentCard(comment) {
   const [publishedAt, setPublishedAt] = useState();
   
 
-  useEffect(() => {
-    if (comment?.comment?.owner) {
-      getUser(comment.comment.owner);
+  useEffect(() => {    
+    if (comment?.owner) {
+      getUser(comment.owner);
       getLikeCount();
       getLikedComments();
-      setPublishedAt(timeAgo(comment.comment.createdAt));
+      setPublishedAt(timeAgo(comment.createdAt));
     }
-  }, [comment?.comment?.owner]);
+  }, [comment?.owner]);
 
   // This runs AFTER likedComment or Comment changes
   useEffect(() => {
-    if (comment.comment._id && likedComment.length > 0) {
+    if (comment._id && likedComment.length > 0) {
       setLikeStatus();
     }
-  }, [comment.comment._id, likedComment]);
+  }, [comment._id, likedComment]);
 
   // Fetch user data when comment is loaded
   const getUser = async (userId) => {
@@ -42,7 +45,7 @@ function CommentCard(comment) {
   const toggleLike = async () => {
     try {
       const response = await api.post(
-        `/likes/comment/${comment.comment._id}`,
+        `/likes/comment/${comment._id}`,
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -64,7 +67,7 @@ function CommentCard(comment) {
   const getLikeCount = async () => {
     try {
       const response = await api.get(
-        `/likes/likeCount/comment/${comment.comment._id}`,
+        `/likes/likeCount/comment/${comment._id}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
@@ -89,7 +92,7 @@ function CommentCard(comment) {
 
   const setLikeStatus = () => {
     if (likedComment.length > 0) {
-      const isLiked = likedComment.some((v) => v.comment === comment.comment._id);   
+      const isLiked = likedComment.some((v) => v.comment === comment._id);   
       setLikeToggle(isLiked);  
     } else {
       setLike(false);
@@ -107,8 +110,8 @@ function CommentCard(comment) {
           recipientId: user._id,
           senderId: localStorage.getItem("userId"),
           type: "like",
-          message: `liked "${comment.comment.content}"`,
-          link: `/VideoDetail/${comment.comment.video}`,
+          message: `liked "${comment.content}"`,
+          link: `/VideoDetail/${comment.video}`,
         },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -166,7 +169,7 @@ function CommentCard(comment) {
               <h2 className="text-xs text-gray-500">@{user.username}</h2>
             </div>
             <p className="text-white text-sm line-clamp-2 mt-1">
-              {comment.comment.content}
+              {comment.content}
             </p>
           </div>
           <div className="flex gap-3 mt-2">
@@ -179,10 +182,7 @@ function CommentCard(comment) {
                 }`}
               />
             </h1>
-            <button className="text-xs text-gray-500 hover:font-semibold">
-              Edit
-            </button>
-            <button className="text-xs text-gray-500 hover:font-semibold hover:text-red-500">
+            <button onClick={() => { const payload = {commentId : comment._id,onDelete}; dispatch(openDeleteCommentModal(payload))}} className="text-xs text-gray-500 hover:font-semibold hover:text-red-500">
               Delete
             </button>
           </div>

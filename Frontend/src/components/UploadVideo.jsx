@@ -85,10 +85,10 @@ export default function UploadVideo() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div>
-      <div className="max-h-[650px] md:w-fit w-72 overflow-y-auto border border-white rounded-xl pt-2 px-16 pb-6 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
+    <div className="w-[90%] sm:w-[80%] md:w-[50%] ">
+      <div className="max-h-[800px] overflow-y-auto border border-white rounded-xl pt-2 px-4 md:px-16 pb-6 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
         <button
-          className="pl-[100%] text-white text-2xl hover:text-gray-300"
+          className="pl-[95%] text-white text-2xl hover:text-gray-300"
           onClick={() => dispatch(closeUploadVideoModal())}
         >
           ✖
@@ -204,7 +204,7 @@ export default function UploadVideo() {
               <div className="mt-4">
                 <label className="text-white block">Description*</label>
                 <textarea
-                  className="w-full h-32 bg-gray-800 text-white px-2 py-2 mt-1 rounded-lg border border-stone-400 focus:ring-2 focus:ring-stone-400 outline-none resize-none"
+                  className="w-full h-20 md:h-32 bg-gray-800 text-white px-2 py-2 mt-1 rounded-lg border border-stone-400 focus:ring-2 focus:ring-stone-400 outline-none resize-none"
                   placeholder="Enter video description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -250,7 +250,7 @@ export default function UploadVideo() {
                 <button
                   onClick={uploadVideo}
                   disabled={loading}
-                  className="w-full text-white font-medium text-xl bg-rose-500 rounded-lg py-2 px-4 hover:bg-rose-600 shadow-md"
+                  className="w-full text-white font-semibold text-xl bg-rose-500 rounded-lg py-2 px-4 hover:bg-rose-600 shadow-md"
                   type="submit"
                 >
                   {loading ? "Uploading..." : "Upload Video"}

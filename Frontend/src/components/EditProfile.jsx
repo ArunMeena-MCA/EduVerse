@@ -164,7 +164,7 @@ function EditProfile() {
             ✖
           </button>
         </div>
-        <div className="mx-16">
+        <div className="mx-8">
           {section === 0 && (
             <div>
               <h2 className="text-2xl text-center text-white font-semibold mb-8">
@@ -173,25 +173,25 @@ function EditProfile() {
               <div className="flex flex-col gap-3">
                 <GeneralButton
                   onClick={() => setSection(1)}
-                  className="rounded-lg "
+                  className="rounded-lg"
                 >
                   Update Avatar
                 </GeneralButton>
                 <GeneralButton
                   onClick={() => setSection(2)}
-                  className="rounded-lg "
+                  className="rounded-lg"
                 >
                   Update CoverImage
                 </GeneralButton>
                 <GeneralButton
                   onClick={() => setSection(3)}
-                  className="rounded-lg "
+                  className="rounded-lg"
                 >
                   Update other details
                 </GeneralButton>
                 <GeneralButton
                   onClick={() => setSection(4)}
-                  className="rounded-lg "
+                  className="rounded-lg"
                 >
                   Change Password
                 </GeneralButton>
@@ -241,7 +241,7 @@ function EditProfile() {
                           Update
                         </PrimaryButton>
                       ) : (
-                        <label className="flex cursor-pointer text-xl bg-rose-500 text-white px-2 py-1 mt-4 rounded-md hover:bg-rose-600">
+                        <label className="flex cursor-pointer font-semibold text-xl bg-rose-500 text-white px-2 py-1 mt-4 rounded-md hover:bg-rose-600">
                           Upload New Avatar
                           <input
                             name="newAvatar"
@@ -302,7 +302,7 @@ function EditProfile() {
                           Update
                         </PrimaryButton>
                       ) : (
-                        <label className="flex cursor-pointer text-xl bg-rose-500 text-white px-2 py-1 mt-4 rounded-md hover:bg-rose-600">
+                        <label className="flex text-center font-semibold cursor-pointer text-md sm:text-xl bg-rose-500 text-white px-2 py-1 mt-4 rounded-md hover:bg-rose-600">
                           Upload New CoverImage
                           <input
                             name="newCover"

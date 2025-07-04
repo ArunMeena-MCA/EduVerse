@@ -59,11 +59,11 @@ const updateComment = asyncHandler(async (req, res) => {
 })
 
 const deleteComment = asyncHandler(async (req, res) => {
-    const {commentId} = req.params
+    const {commentId} = req.params    
 
-    // if(!isValidObjectId(commentId)){
-    //     throw new ApiError(400,"Invalid comment id")
-    // }
+    if(!isValidObjectId(commentId)){
+        throw new ApiError(400,"Invalid comment id")
+    }
 
     const comment = await Comment.findByIdAndDelete(commentId)
 

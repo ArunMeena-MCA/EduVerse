@@ -45,11 +45,11 @@ function PlaylistCard({playlist}) {
 
 
   return (
-    <div className="w-72 sm:w-80 lg:w-72 mt-4 cursor-pointer">
+    <div className="w-72 sm:w-80 lg:w-72 my-4 cursor-pointer border border-zinc-800 rounded-md">
       <div className="w-full h-full">
         <div onClick={() => navigate(`/playlistView/${playlist._id}`)} className="relative">
           <img
-            className="rounded h-full w-full"
+            className="rounded h-52 w-full"
             src={thumbnail}
             alt="Playlist Thumbnail"
           />
@@ -64,7 +64,7 @@ function PlaylistCard({playlist}) {
             <h3 className="text-white text-sm font-semibold">{playlist.videos.length} Videos</h3>
           </div>
         </div>
-        <div className="flex gap-2 items-start justify-between items-center">
+        <div className="flex gap-2 items-start justify-between items-center p-1">
           <div onClick={() => navigate(`/playlistView/${playlist._id}`)} className="flex gap-2">
             <img
               className="w-8 h-8 rounded-full mt-1"

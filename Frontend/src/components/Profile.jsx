@@ -12,7 +12,8 @@ import {
   openTweetModal,
   openUploadVideoModal,
   openEditProfileModal,
-  openPlaylistModal
+  openPlaylistModal,
+  openToggleSubscription
 } from "../redux/slices/modalSlice";
 import { FaUserEdit } from "react-icons/fa";
 import { GrPlayFill } from "react-icons/gr";
@@ -20,9 +21,10 @@ import { TiPlus } from "react-icons/ti";
 import { RiPlayList2Fill } from "react-icons/ri";
 import { TbMessageReportFilled } from "react-icons/tb";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 function Profile() {
   const userId = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [subscribe, setSubscribe] = useState(false);
   const [subscriberCount, setSubscriberCount] = useState(0);
@@ -37,7 +39,7 @@ function Profile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setToggle(0)
+    // setToggle(0);
     getUser();
     fetchVideos();
     fetchPlaylists();
@@ -270,6 +272,7 @@ function Profile() {
           <button
             onClick={() => {
               setToggle(6);
+              dispatch(openEditProfileModal())
             }}
             className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 6 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -280,6 +283,7 @@ function Profile() {
           <button
             onClick={() => {
               setToggle(7);
+              dispatch(openUploadVideoModal())
             }}
             className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -287,56 +291,144 @@ function Profile() {
           >
             Upload Video
           </button>
+
+          <button
+            onClick={() => {
+              setToggle(7);
+              dispatch(openPlaylistModal())
+            }}
+            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
+            }`}
+          >
+            Create Playlist
+          </button>
           <button
             onClick={() => {
               setToggle(1);
               fetchVideos();
             }}
-            className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+            className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 1 ? "md:bg-zinc-600 md:font-semibold" : ""
             }`}
           >
             Videos
           </button>
+
+          {/* for small screen */}
           <button
             onClick={() => {
-              setToggle(2);
+              setToggle(1);
+              fetchVideos();
+              navigate("/VideoList",{state:{videos: videos}})
             }}
-            className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              toggle === 1 ? "md:bg-zinc-600 md:font-semibold" : ""
+            }`}
+          >
+            Videos
+          </button>
+
+          <button
+            onClick={() => {
+              setToggle(2);              
+            }}
+            className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 2 ? "md:bg-zinc-600 md:font-semibold" : ""
             }`}
           >
             Playlists
           </button>
+
+          {/* for small screen */}
+          <button
+            onClick={() => {
+              setToggle(2);
+              navigate("/PlaylistList",{state:{playlists: playlists}})
+            }}
+            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              toggle === 2 ? "md:bg-zinc-600 md:font-semibold" : ""
+            }`}
+          >
+            Playlists
+          </button>
+
           <button
             onClick={() => {
               setToggle(3);
               fetchTweets();
             }}
-            className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+            className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 3 ? "md:bg-zinc-600 md:font-semibold" : ""
             }`}
           >
             Tweets
           </button>
+
+          {/* for small screen */}
+          <button
+            onClick={() => {
+              setToggle(3);
+              fetchTweets();
+              navigate("/TweetList",{state:{tweets: tweets}})
+            }}
+            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              toggle === 3 ? "md:bg-zinc-600 md:font-semibold" : ""
+            }`}
+          >
+            Tweets
+          </button>
+
           {userId.id === localStorage.getItem("userId") && (
             <button
               onClick={() => {
                 setToggle(4);
               }}
-              className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
                 toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
               }`}
             >
               Dashboard
             </button>
           )}
+
+          {/* for small screen */}
+          {userId.id === localStorage.getItem("userId") && (
+            <button
+              onClick={() => {
+                setToggle(4);
+                navigate("/MiniDashboard", {state: {videos: videos, subscriberCount: subscriberCount}})
+              }}
+              className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
+              }`}
+            >
+              Dashboard
+            </button>
+          )}
+
           {userId.id === localStorage.getItem("userId") && (
             <button
               onClick={() => {
                 setToggle(5);
               }}
-              className={`flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                toggle === 5 ? "md:bg-zinc-600 md:font-semibold" : ""
+              }`}
+            >
+              Subscribed
+            </button>
+          )}
+
+          {/* for small screen */}
+          {userId.id === localStorage.getItem("userId") && (
+            <button
+              onClick={() => {
+                setToggle(5);
+                dispatch(openToggleSubscription(toggleSubscription));
+                navigate("/SubscribedList", {state: {subscribedChannels: subscribedChannels}})
+              }}
+              className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
                 toggle === 5 ? "md:bg-zinc-600 md:font-semibold" : ""
               }`}
             >

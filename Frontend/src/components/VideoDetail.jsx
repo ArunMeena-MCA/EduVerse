@@ -73,7 +73,8 @@ function VideoDetail() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setComments((prevComments) => [response.data.data, ...prevComments]);
-      console.log(response.data.data);
+      // console.log(response.data.data);
+      setCommentCount(commentCount+1);
       setComment("");
     } catch (error) {
       console.log(error);
@@ -293,6 +294,12 @@ function VideoDetail() {
     }
   };
 
+  const handleDeletedComment = (deletedId) => {    
+    const updatedCommentList = comments.filter((comment) => comment._id !== deletedId);
+    setComments(updatedCommentList);
+    setCommentCount(updatedCommentList.length)
+  }
+
   return (
     <div className="flex flex-col md:flex-row gap-3 md:mx-0">
       <div className="md:w-[64%] ml-0 md:ml-12">
@@ -370,12 +377,12 @@ function VideoDetail() {
               placeholder="Add a comment..."
               onChange={(e) => setComment(e.target.value)}
             />
-            <SecButton onClick={() => postComment()}>Comment</SecButton>
+            <PrimaryButton onClick={() => postComment()}>Comment</PrimaryButton>
           </div>
           {/* Comment Section */}
           <div className="ml-2">
             {comments.map((comment) => (
-              <CommentCard key={comment._id} comment={comment} />
+              <CommentCard key={comment._id} comment={comment} onDelete={handleDeletedComment}/>
             ))}
           </div>
         </div>

@@ -29,13 +29,8 @@ function Introductory() {
         <PrimaryButton onClick={()=> dispatch(openLogin())} className="bg-rose-400 text-xl md:text-3xl px-4">Login</PrimaryButton>
         <SecButton onClick={() => dispatch(openRegister())} className="bg-stone-400 text-xl md:text-3xl ">Signup</SecButton>
       </div>
-      {/* <div className='flex mt-16'>
-            <img className='h-28' src={Reel} alt="" />
-            <img className='h-28' src={Reel} alt="" />
-            <img className='h-28' src={Reel} alt="" />
-        </div> */}
 
-      {/* Animation */}
+      {/* Animation
       <div className="overflow-hidden w-full mt-16">
         <motion.div
           className="flex"
@@ -51,7 +46,10 @@ function Introductory() {
             />
           ))}
         </motion.div>
-      </div>      
+      </div>       */
+      }
+
+      
     </div>
   );
 }

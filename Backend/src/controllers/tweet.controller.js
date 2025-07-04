@@ -37,9 +37,10 @@ const getUserTweets = asyncHandler(async (req, res) => {
     return res.json(new ApiResponse(200, tweets, "Tweets fetched successfully"))
 })
 
-const updateTweet = asyncHandler(async (req, res) => {
+const updateTweet = asyncHandler(async (req, res) => {    
     const { tweetId } = req.params
     const { tweetText } = req.body
+    
 
     const tweet = await Tweet.findByIdAndUpdate(tweetId, {content: tweetText}, {new: true})
 

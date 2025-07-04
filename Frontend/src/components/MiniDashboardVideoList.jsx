@@ -8,7 +8,7 @@ import {
   openEditVideoModal,
 } from "../redux/slices/modalSlice";
 
-function DashboardVideoList({ video, onDelete }) {
+function MiniDashboardVideoList({ video, onDelete }) {
   const [likeCount, setLikeCount] = useState(null);
   const dispatch = useDispatch();
   const [isPublic,setIsPublic] = useState(false);
@@ -43,8 +43,8 @@ function DashboardVideoList({ video, onDelete }) {
 
   return (
     <div>
-      <div className="flex items-center p-2 h-14">
-        <div className="flex w-[40%] items-center gap-2">
+      <div className="flex flex-col gap-2 p-2">
+        <div className="flex items-center gap-2">
           <img
             className="w-8 h-8 rounded-full"
             src={video.thumbnail}
@@ -53,7 +53,7 @@ function DashboardVideoList({ video, onDelete }) {
           <h1 className="text-white line-clamp-1">{video.title}</h1>
         </div>
 
-        <div className="w-[15%] flex justify-center">
+        <div className="flex justify-center">
           <div className="flex gap-2 items-center mt-2 justify-center">
             <div
               className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer ${
@@ -79,27 +79,31 @@ function DashboardVideoList({ video, onDelete }) {
           </div>
         </div>
 
-        <div className="w-[15%] text-center text-white">{video.views}</div>
-        <div className="w-[15%] text-center text-white">
-          {likeCount !== null ? likeCount : "Loading..."}
+        <div className="flex justify-center gap-5">
+            <div className="text-center text-white font-semibold">Views : {video.views}</div>
+            <div className="text-center text-white font-semibold">
+            Likes : {likeCount !== null ? likeCount : "Loading..."}
+            </div>
         </div>
 
-        <div className="w-[6%] h-fit flex gap-10 pl-4">
-          <MdOutlineModeEditOutline
-            onClick={() => dispatch(openEditVideoModal(video._id))}
-            className="text-xl hover:text-2xl"
-            color="white"
-          />
-        </div>
+        <div className="flex justify-center">
+            <div className="h-fit flex gap-10 pl-4">
+            <MdOutlineModeEditOutline
+                onClick={() => dispatch(openEditVideoModal(video._id))}
+                className="text-xl hover:text-2xl"
+                color="white"
+            />
+            </div>
 
-        <div className="w-[9%] h-fit flex gap-10 pl-4">
-          <RiDeleteBinLine
-            onClick={() => {
-              dispatch(openDeleteVideoModal(video._id, onDelete));
-            }}
-            className="text-xl hover:text-2xl"
-            color="white"
-          />
+            <div className="h-fit flex gap-10 pl-4">
+            <RiDeleteBinLine
+                onClick={() => {
+                dispatch(openDeleteVideoModal(video._id, onDelete));
+                }}
+                className="text-xl hover:text-2xl"
+                color="white"
+            />
+            </div>  
         </div>
       </div>
       <hr className="border-gray-600" />
@@ -107,4 +111,4 @@ function DashboardVideoList({ video, onDelete }) {
   );
 }
 
-export default DashboardVideoList;
+export default MiniDashboardVideoList;

@@ -33,9 +33,9 @@ function CreatePlaylist() {
 
   return (
     <div>
-      <div className="max-h-[650px] md:w-fit w-72 overflow-y-auto border border-white rounded-xl pt-2 px-16 pb-6 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
+      <div className="max-h-[650px] md:w-fit w-72 overflow-y-auto border border-white rounded-xl pt-2 px-8 md:px-16 pb-6 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
         <button
-          className="pl-[110%] text-white text-2xl hover:text-gray-300"
+          className="pl-[104%] text-white text-2xl hover:text-gray-300"
           onClick={() => dispatch(closePlaylistModal())}
         >
           ✖

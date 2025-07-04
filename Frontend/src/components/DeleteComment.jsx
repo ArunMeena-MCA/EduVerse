@@ -4,23 +4,24 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../utils/PrimaryButton";
 import SecButton from "../utils/SecButton";
 import api from "../utils/api";
-import { closeDeleteVideoModal } from "../redux/slices/modalSlice";
+import { closeDeleteCommentModal } from "../redux/slices/modalSlice";
 
-function DeleteVideo({payload}) {
+function DeleteComment({payload}) {
   const dispatch = useDispatch();
 
- const deleteVideo = async () => {
-  // console.log(onDelete); undefined ??
+ const deleteComment = async () => {  
+  console.log(payload);
   
     try {
-      await api.delete(`/videos/delete/${payload.videoId}`, {
+      await api.delete(`/comment/${payload.commentId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      console.log("Video deleted!");
-      if (payload.onDelete) payload.onDelete(payload.videoId); // Notify parent if provided
-      dispatch(closeDeleteVideoModal());
+      console.log("Comment deleted!");
+      
+      if (payload.onDelete) payload.onDelete(payload.commentId); // Notify parent if provided
+      dispatch(closeDeleteCommentModal());
     } catch (error) {
-      console.error("Error deleting video:", error);
+      console.error("Error deleting comment:", error);
     }
   };
 
@@ -30,11 +31,11 @@ function DeleteVideo({payload}) {
         Are you sure ?
       </h2>
       <div className="flex flex-col gap-5">
-        <PrimaryButton onClick={() => dispatch(closeDeleteVideoModal())} >Cancel</PrimaryButton>
-        <SecButton onClick={() => deleteVideo()}>Delete</SecButton>
+        <PrimaryButton onClick={() => dispatch(closeDeleteCommentModal())} >Cancel</PrimaryButton>
+        <SecButton onClick={() => deleteComment()}>Delete</SecButton>
       </div>
     </div>
   );
 }
 
-export default DeleteVideo;
+export default DeleteComment;

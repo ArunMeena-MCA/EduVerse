@@ -14,9 +14,11 @@ import DeletePlaylist from "./components/DeletePlaylist";
 import DeleteVideo from "./components/DeleteVideo";
 import Notification from "./components/Notification";
 import { useDispatch, useSelector } from "react-redux";
-import { LogOut, Upload } from "lucide-react";
 import { closeSearchingModal } from "./redux/slices/modalSlice";
 import SearchBox from "./components/SearchBox";
+import DeleteTweet from "./components/DeleteTweet";
+import DeleteComment from "./components/DeleteComment";
+import EditTweet from "./components/EditTweet";
 function App() {
   const dispatch = useDispatch();
   const {
@@ -30,12 +32,18 @@ function App() {
     selectedPlaylist,
     isEditVideoModalOpen,
     videoIdToEdit,
+    isEditTweetModalOpen,
+    tweetToEdit,
     isEditPlaylistModalOpen,
     playlistToEdit,
     isDeletePlaylistModalOpen,
     playlistIdToDelete,
     isDeleteVideoModalOpen,
     videoIdToDelete,
+    isDeleteTweetModalOpen,
+    TweetIdToDelete,
+    isDeleteCommentModalOpen,
+    CommentIdToDelete,    
     isNotificationModalOpen,
     isSearchingModalOpen,
     searchResults,
@@ -57,9 +65,12 @@ function App() {
           isEditProfileModalOpen ||
           isAddVideoToPlaylistModalOpen ||
           isEditVideoModalOpen ||
+          isEditTweetModalOpen ||
           isEditPlaylistModalOpen ||
           isDeletePlaylistModalOpen ||
           isDeleteVideoModalOpen ||
+          isDeleteTweetModalOpen ||
+          isDeleteCommentModalOpen ||
           isLogoutOpen
             ? "blur-sm"
             : ""
@@ -127,6 +138,12 @@ function App() {
         </div>
       )}
 
+      {isEditTweetModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <EditTweet tweetId={tweetToEdit} />
+        </div>
+      )}
+
       {isEditPlaylistModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <EditPlaylist playlist={playlistToEdit} />
@@ -135,7 +152,19 @@ function App() {
 
       {isDeleteVideoModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
-          <DeleteVideo videoId={videoIdToDelete} />
+          <DeleteVideo payload={videoIdToDelete} />
+        </div>
+      )}
+
+      {isDeleteTweetModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <DeleteTweet payload={TweetIdToDelete} />
+        </div>
+      )}
+
+      {isDeleteCommentModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <DeleteComment payload={CommentIdToDelete} />
         </div>
       )}
 
