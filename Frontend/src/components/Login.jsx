@@ -66,7 +66,7 @@ function Login() {
             </label>
             <input
               {...register("username", { required: "Username is required" })}
-              className="rounded-md px-1 w-[60%] sm:w-52 md:w-52"
+              className="rounded-md px-1 md:ml-2 w-[60%] sm:w-52 md:w-52"
               type="text"
               id="username"
               placeholder="username"
@@ -84,7 +84,7 @@ function Login() {
             </label>
             <input
               {...register("password", { required: "Password is required" })}
-              className="rounded-md px-1 w-[60%] sm:w-52 md:w-52"
+              className="rounded-md px-1 md:ml-2 w-[60%] sm:w-52 md:w-52"
               type="password"
               id="password"
               placeholder="password"
