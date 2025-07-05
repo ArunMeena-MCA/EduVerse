@@ -1,9 +1,12 @@
 import React, { useState,useEffect } from "react";
 import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { openLogin } from "../redux/slices/modalSlice";
 
 function MiniVideoListCard(video) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user,setUser] = useState({})
   const [publishedAt, setPublishedAt] = useState();
 
@@ -50,7 +53,7 @@ function MiniVideoListCard(video) {
   }
 
   return (
-    <div onClick={()=> navigate(`/VideoDetail/${video.video._id}`)} className="h-[100px] hover:bg-zinc-800 flex gap-2 rounded-md cursor-pointer border border-gray-700 rounded-lg">
+    <div onClick={()=> { if(localStorage.getItem('token')) navigate(`/VideoDetail/${video.video._id}`); else dispatch(openLogin())}} className="h-[100px] hover:bg-zinc-800 flex gap-2 rounded-md cursor-pointer border border-gray-700 rounded-lg">
       <img
         className="rounded-md w-[40%] m-1"
         src={video.video.thumbnail}
