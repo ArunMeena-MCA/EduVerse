@@ -19,6 +19,7 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 function Register() {
   const dispatch = useDispatch();
   const { error, loading } = useSelector((state) => state.register);
+  const [loadingWheel, setLoadingWheel] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [cover, setCover] = useState(null);
   const [passwordStatus, setPasswordStatus] = useState(true);
@@ -98,6 +99,7 @@ function Register() {
 
   const onSubmit = async (data) => {
     // console.log("Form Data on Submit:", data);
+    setLoadingWheel(true);
     if (!avatar) {
       dispatch(registrationFailure("Upload an avatar!"));
       return;
@@ -113,6 +115,7 @@ function Register() {
     if (verified === false) {
       setEmail(data.email);
       sendOtp(data.email);
+      setLoadingWheel(false);
     } else {
       const formData = new FormData();
       formData.append("fullname", data.fullname);
@@ -132,13 +135,16 @@ function Register() {
         });
         dispatch(registrationSuccess(response.data));
         setRegistered(true);
-        dispatch(closeRegister())
+        dispatch(closeRegister());
+        dispatch(openLogin());
+        setLoadingWheel(false);
       } catch (error) {
         dispatch(
           registrationFailure(
             error.response?.data?.message || "Not registered!"
           )
         );
+        setLoadingWheel(false);
       }
     }
   };
@@ -210,8 +216,8 @@ function Register() {
   };
 
   return (
-    <div>
-      <div className="max-h-screen min-h-96 md:w-fit w-72 overflow-y-auto border border-white rounded-xl pt-2 px-10 pb-6 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
+    <div className="md:w-fit w-[90%]">
+      <div className="max-h-screen min-h-96 overflow-y-auto border border-white rounded-xl px-10 pt-2 pb-6 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
         <button
           className="pl-[100%] text-white text-2xl hover:text-gray-300"
           onClick={() => dispatch(closeRegister())}
@@ -407,7 +413,7 @@ function Register() {
                   )}
                   <div className="flex justify-center mt-4">
                     <PrimaryButton type="submit">
-                      {(loading && !verified) ? (
+                      {((loading && !verified) || loadingWheel) ? (
                         <AiOutlineLoading className="animate-spin text-xl text-stone-800 mx-8 my-1" />
                       ) : (
                         "Register"

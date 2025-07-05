@@ -48,8 +48,8 @@ function Login() {
   };
 
   return (
-    <div>
-      <div className="h-fit md:w-96 w-72 border border-white rounded-xl pt-6 px-10 pb-12 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
+    <div className="md:w-fit w-[90%]">
+      <div className="h-fit border border-white rounded-xl pt-6 px-8 md:px-10 pb-12 bg-zinc-900 shadow-[0px_0px_20px_rgba(251,113,133,0.9)]">
         <button
           className="pl-[100%] text-white text-2xl hover:text-gray-300"
           onClick={() => dispatch(closeLogin())}
@@ -66,7 +66,7 @@ function Login() {
             </label>
             <input
               {...register("username", { required: "Username is required" })}
-              className="rounded-md px-1 w-28 md:w-52"
+              className="rounded-md px-1 w-[60%] sm:w-52 md:w-52"
               type="text"
               id="username"
               placeholder="username"
@@ -84,7 +84,7 @@ function Login() {
             </label>
             <input
               {...register("password", { required: "Password is required" })}
-              className="rounded-md px-1 w-28 md:w-52"
+              className="rounded-md px-1 w-[60%] sm:w-52 md:w-52"
               type="password"
               id="password"
               placeholder="password"

@@ -57,7 +57,7 @@ function VideoCard(video) {
           alt="Playlist Thumbnail"
         />
       </div>
-      <div className="w-full flex items-center gap-2 mt-2">
+      <div className="w-full flex items-center gap-2 mt-2 px-2">
         <img className="w-8 h-8 rounded-full" src={user.avatar} alt="Profile pic" />
         <div className="w-full">
             <h1 className="text-white font-semibold line-clamp-1">{video.video.title}</h1>

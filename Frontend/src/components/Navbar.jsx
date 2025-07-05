@@ -26,12 +26,17 @@ export default function Navbar() {
   const [search, setSearch] = useState("");
   const [notificationBox, setNotificationBox] = useState(false);
   const [notificationFlag, setNotificationFlag] = useState(false);
+  let user = useSelector((state) => state.auth.user);
 
-  useEffect(() => {
-    checkNotification();
-  })
+
+  useEffect(() => {    
+    if (user) {
+      checkNotification();
+    }
+  }, [user]);  
 
   const checkNotification = async () => {
+    if(!user) return;
     try {
       const response = await api.get('/notifications/unread-count',{
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -48,8 +53,6 @@ export default function Navbar() {
     `/Profile/${localStorage.getItem("userId")}`,
     location.pathname
   );
-
-  const user = useSelector((state) => state.auth.user);
 
   const handleNotification = () => {
     if(notificationBox){

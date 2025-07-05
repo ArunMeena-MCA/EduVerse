@@ -182,9 +182,11 @@ function CommentCard({comment,onDelete}) {
                 }`}
               />
             </h1>
-            <button onClick={() => { const payload = {commentId : comment._id,onDelete}; dispatch(openDeleteCommentModal(payload))}} className="text-xs text-gray-500 hover:font-semibold hover:text-red-500">
-              Delete
-            </button>
+            {user._id === localStorage.getItem("userId") && (
+              <button onClick={() => { const payload = {commentId : comment._id,onDelete}; dispatch(openDeleteCommentModal(payload))}} className="text-xs text-gray-500 hover:font-semibold hover:text-red-500">
+                Delete
+              </button>
+            )}
           </div>
         </div>
       </div>
