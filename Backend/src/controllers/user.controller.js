@@ -161,8 +161,8 @@ const loginUser = asyncHandler(async(req,res) => {
     }
     
     // find the user
-    // username = username.toLowerCase()
-    // email = email.toLowerCase()
+    username = username.toLowerCase()
+    email = email.toLowerCase()
 
     const newUser = await user.findOne({
         $or: [{username},{email}]
