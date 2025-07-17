@@ -93,6 +93,9 @@ export default function Navbar() {
               if (user) {
                 navigate("/Home");
               }
+              else{
+                navigate("/");
+              }
             }}
             src={MeTube}
             alt="Logo"
@@ -150,7 +153,7 @@ export default function Navbar() {
               )}
             </div>
           ) : (
-            location.pathname === "/" && (
+            (location.pathname === "/" || location.pathname === "/TermsAndConditions" || location.pathname === "/PrivacyPolicy") && (
               <div className="flex gap-2 md:gap-5">
                 <h2
                   onClick={() => dispatch(openLogin())}
