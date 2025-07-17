@@ -152,7 +152,7 @@ const verifyOtp = asyncHandler(async(req, res) => {
 })
 
 const loginUser = asyncHandler(async(req,res) => {
-    const {email,username,password} = req.body;
+    let {email,username,password} = req.body;
 
     // access based on username (or email)
     
