@@ -161,8 +161,10 @@ const loginUser = asyncHandler(async(req,res) => {
     }
     
     // find the user
-    username = username.toLowerCase()
-    email = email.toLowerCase()
+    if(username)
+        username = username.toLowerCase()
+    if(email)
+        email = email.toLowerCase()
     
 
     const newUser = await user.findOne({
