@@ -284,7 +284,7 @@ function Profile() {
                   setToggle(6);
                   dispatch(openEditProfileModal());
                 }}
-                className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                className={`md:hidden flex justify-center w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
                   toggle === 6 ? "md:bg-zinc-600 md:font-semibold" : ""
                 }`}
               >
