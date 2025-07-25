@@ -9,7 +9,7 @@ import Dashboard from "./Dashboard";
 import Sidebar from "./Sidebar";
 import api from "../utils/api";
 import cover_default from "../assets/cover_default.jpg";
-import avatar_default from "../assets/avatar_default.png";
+// import avatar_default from "../assets/avatar_default.png";
 import {
   openTweetModal,
   openUploadVideoModal,
@@ -210,7 +210,7 @@ function Profile() {
           <div className="flex items-center gap-5">
             <img
               className="rounded-full w-24 h-24 md:w-32 md:h-32"
-              src={user.avatar ? user.avatar : avatar_default}
+              src={user.avatar}
               alt="Profile pic"
             />
             <div>
