@@ -69,17 +69,6 @@ function Sidebar({ userId, toggle, setToggle }) {
 
             <button
               onClick={() => {
-                setToggle(4);
-              }}
-              className={`flex justify-center w-full mt-2 rounded py-1 text-white cursor-pointer hover:font-bold ${
-                toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
-              }`}
-            >
-              Dashboard
-            </button>
-            <hr className="border-1 border-gray-500 w-full" />
-            <button
-              onClick={() => {
                 setToggle(5);
               }}
               className={`flex justify-center w-full mt-2 rounded py-1 text-white cursor-pointer hover:font-bold ${
@@ -122,6 +111,18 @@ function Sidebar({ userId, toggle, setToggle }) {
           }`}
         >
           Tweets
+        </button>
+        <hr className="border-1 border-gray-500 w-full" />
+
+        <button
+          onClick={() => {
+            setToggle(4);
+          }}
+          className={`flex justify-center w-full mt-2 rounded py-1 text-white cursor-pointer hover:font-bold ${
+            toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
+          }`}
+        >
+          Dashboard
         </button>
         <hr className="border-1 border-gray-500 w-full" />
       </div>

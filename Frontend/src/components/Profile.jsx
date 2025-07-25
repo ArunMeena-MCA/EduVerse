@@ -278,45 +278,45 @@ function Profile() {
         <hr className="md:hidden mt-4 md:mt-1 " />
         <div className="flex flex-col md:flex-row justify-between items-center mx-10 mt-10">
           {userId.id === localStorage.getItem("userId") && (
-              <button
-                onClick={() => {
-                  setToggle(6);
-                  dispatch(openEditProfileModal());
-                }}
-                className={`md:hidden flex justify-center w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-                  toggle === 6 ? "md:bg-zinc-600 md:font-semibold" : ""
-                }`}
-              >
-                Edit Profile
-              </button>
-          )}
-          {userId.id === localStorage.getItem("userId") && (  
-              <button
-                onClick={() => {
-                  setToggle(7);
-                  dispatch(openUploadVideoModal());
-                }}
-                className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-                  toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
-                }`}
-              >
-                Upload Video
-              </button>
+            <button
+              onClick={() => {
+                setToggle(6);
+                dispatch(openEditProfileModal());
+              }}
+              className={`md:hidden flex justify-center w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                toggle === 6 ? "md:bg-zinc-600 md:font-semibold" : ""
+              }`}
+            >
+              Edit Profile
+            </button>
           )}
           {userId.id === localStorage.getItem("userId") && (
-              <button
-                onClick={() => {
-                  setToggle(7);
-                  dispatch(openPlaylistModal());
-                }}
-                className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-                  toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
-                }`}
-              >
-                Create Playlist
-              </button>
+            <button
+              onClick={() => {
+                setToggle(7);
+                dispatch(openUploadVideoModal());
+              }}
+              className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
+              }`}
+            >
+              Upload Video
+            </button>
           )}
-          
+          {userId.id === localStorage.getItem("userId") && (
+            <button
+              onClick={() => {
+                setToggle(7);
+                dispatch(openPlaylistModal());
+              }}
+              className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
+              }`}
+            >
+              Create Playlist
+            </button>
+          )}
+
           <button
             onClick={() => {
               setToggle(1);
@@ -393,35 +393,31 @@ function Profile() {
             Tweets
           </button>
 
-          {userId.id === localStorage.getItem("userId") && (
-            <button
-              onClick={() => {
-                setToggle(4);
-              }}
-              className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-                toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
-              }`}
-            >
-              Dashboard
-            </button>
-          )}
+          <button
+            onClick={() => {
+              setToggle(4);
+            }}
+            className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
+            }`}
+          >
+            Dashboard
+          </button>
 
           {/* for small screen */}
-          {userId.id === localStorage.getItem("userId") && (
-            <button
-              onClick={() => {
-                setToggle(4);
-                navigate("/MiniDashboard", {
-                  state: { videos: videos, subscriberCount: subscriberCount },
-                });
-              }}
-              className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-                toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
-              }`}
-            >
-              Dashboard
-            </button>
-          )}
+          <button
+            onClick={() => {
+              setToggle(4);
+              navigate("/MiniDashboard", {
+                state: { videos: videos, subscriberCount: subscriberCount },
+              });
+            }}
+            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+              toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
+            }`}
+          >
+            Dashboard
+          </button>
 
           {userId.id === localStorage.getItem("userId") && (
             <button
