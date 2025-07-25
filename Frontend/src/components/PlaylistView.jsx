@@ -5,7 +5,11 @@ import { useParams } from "react-router-dom";
 import api from "../utils/api";
 import PrimaryButton from "../utils/PrimaryButton";
 import { useDispatch } from "react-redux";
-import { openAddVideoToPlaylistModal, openDeletePlaylistModal, openEditPlaylistModal } from "../redux/slices/modalSlice";
+import {
+  openAddVideoToPlaylistModal,
+  openDeletePlaylistModal,
+  openEditPlaylistModal,
+} from "../redux/slices/modalSlice";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import GeneralButton from "../utils/GeneralButton";
@@ -144,32 +148,45 @@ function PlaylistView() {
                 Add Video
               </PrimaryButton>
               <div className="flex gap-3 justify-center mt-2">
-                <SecButton onClick={() => dispatch(openEditPlaylistModal(playlist))} className="px-4 flex items-center gap-1 text-black">Edit <MdOutlineModeEditOutline className="text-black"/></SecButton>
-                <SecButton onClick={() => dispatch(openDeletePlaylistModal(playlist._id))} className="flex items-center gap-1 text-black">Delete <RiDeleteBinLine className="text-black"/> </SecButton>
+                <SecButton
+                  onClick={() => dispatch(openEditPlaylistModal(playlist))}
+                  className="px-4 flex items-center gap-1 text-black"
+                >
+                  Edit <MdOutlineModeEditOutline className="text-black" />
+                </SecButton>
+                <SecButton
+                  onClick={() =>
+                    dispatch(openDeletePlaylistModal(playlist._id))
+                  }
+                  className="flex items-center gap-1 text-black"
+                >
+                  Delete <RiDeleteBinLine className="text-black" />{" "}
+                </SecButton>
               </div>
-
             </div>
           </div>
         )}
       </div>
       <div className="md:ml-6 my-6">
         <div className="flex flex-col gap-3 mx-4">
-          {videos.map((video) => (
-            <div
-              key={video._id}
-              className="flex flex-col md:flex-row justify-between md:items-center"
-            >
-              <VideoListCard video={video} />
-              {user._id === localStorage.getItem("userId") && (
-                <button
-                  onClick={() => removeVideo(video._id)}
-                  className="bg-gray-400 px-2 rounded-md font-semibold hover:text-red-500 hover:border hover:border-2 hover:border-red-500"
-                >
-                  Remove Video
-                </button>
-              )}
-            </div>
-          ))}
+          {videos
+            .filter((video) => video.ispublished)
+            .map((video) => (
+              <div
+                key={video._id}
+                className="flex flex-col md:flex-row justify-between md:items-center"
+              >
+                <VideoListCard video={video} />
+                {user._id === localStorage.getItem("userId") && (
+                  <button
+                    onClick={() => removeVideo(video._id)}
+                    className="bg-gray-400 px-2 rounded-md font-semibold hover:text-red-500 hover:border hover:border-2 hover:border-red-500"
+                  >
+                    Remove Video
+                  </button>
+                )}
+              </div>
+            ))}
         </div>
       </div>
     </div>
