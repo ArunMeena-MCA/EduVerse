@@ -15,7 +15,7 @@ import {
   openUploadVideoModal,
   openEditProfileModal,
   openPlaylistModal,
-  openToggleSubscription
+  openToggleSubscription,
 } from "../redux/slices/modalSlice";
 import { FaUserEdit } from "react-icons/fa";
 import { GrPlayFill } from "react-icons/gr";
@@ -82,16 +82,19 @@ function Profile() {
 
   const fetchPlaylists = async () => {
     try {
-      const response = await api.get(`/playlist/getUserPlaylists/${userId.id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      const response = await api.get(
+        `/playlist/getUserPlaylists/${userId.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setPlaylists(response.data.data);
     } catch (error) {
-      console.log(error);      
+      console.log(error);
     }
-  }
+  };
 
   const fetchTweets = async () => {
     try {
@@ -144,7 +147,6 @@ function Profile() {
         (channel) => channel != channelId
       );
       setSubscribedChannels(updatedSubscribedChannels);
-
     } catch (error) {
       console.log(error);
     }
@@ -179,24 +181,28 @@ function Profile() {
 
   const triggerNotification = async () => {
     try {
-      const response = await api.post('/notifications/createNotification', {
-        recipientId: userId.id,
-        senderId: localStorage.getItem("userId"),
-        type: "subscribe",
-        message: "subscribed to your channel.",
-        link: `/Profile/${localStorage.getItem("userId")}`,
-      },{
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await api.post(
+        "/notifications/createNotification",
+        {
+          recipientId: userId.id,
+          senderId: localStorage.getItem("userId"),
+          type: "subscribe",
+          message: "subscribed to your channel.",
+          link: `/Profile/${localStorage.getItem("userId")}`,
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div className="flex">
       <div className="w-[20%] hidden md:block">
-        <Sidebar userId={userId} toggle={toggle} setToggle={setToggle}/>
+        <Sidebar userId={userId} toggle={toggle} setToggle={setToggle} />
       </div>
       <div className="h-full w-full md:w-[80%]">
         <div>
@@ -271,40 +277,45 @@ function Profile() {
         </div>
         <hr className="md:hidden mt-4 md:mt-1 " />
         <div className="flex flex-col md:flex-row justify-between items-center mx-10 mt-10">
-          <button
-            onClick={() => {
-              setToggle(6);
-              dispatch(openEditProfileModal())
-            }}
-            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-              toggle === 6 ? "md:bg-zinc-600 md:font-semibold" : ""
-            }`}
-          >
-            Edit Profile
-          </button>
-          <button
-            onClick={() => {
-              setToggle(7);
-              dispatch(openUploadVideoModal())
-            }}
-            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-              toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
-            }`}
-          >
-            Upload Video
-          </button>
+          {userId.id === localStorage.getItem("userId") && (
+            <div>
+              <button
+                onClick={() => {
+                  setToggle(6);
+                  dispatch(openEditProfileModal());
+                }}
+                className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                  toggle === 6 ? "md:bg-zinc-600 md:font-semibold" : ""
+                }`}
+              >
+                Edit Profile
+              </button>
 
-          <button
-            onClick={() => {
-              setToggle(7);
-              dispatch(openPlaylistModal())
-            }}
-            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
-              toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
-            }`}
-          >
-            Create Playlist
-          </button>
+              <button
+                onClick={() => {
+                  setToggle(7);
+                  dispatch(openUploadVideoModal());
+                }}
+                className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                  toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
+                }`}
+              >
+                Upload Video
+              </button>
+
+              <button
+                onClick={() => {
+                  setToggle(7);
+                  dispatch(openPlaylistModal());
+                }}
+                className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+                  toggle === 7 ? "md:bg-zinc-600 md:font-semibold" : ""
+                }`}
+              >
+                Create Playlist
+              </button>
+            </div>
+          )}
           <button
             onClick={() => {
               setToggle(1);
@@ -322,7 +333,7 @@ function Profile() {
             onClick={() => {
               setToggle(1);
               fetchVideos();
-              navigate("/VideoList",{state:{videos: videos}})
+              navigate("/VideoList", { state: { videos: videos } });
             }}
             className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 1 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -333,7 +344,7 @@ function Profile() {
 
           <button
             onClick={() => {
-              setToggle(2);              
+              setToggle(2);
             }}
             className={`hidden md:block flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 2 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -346,7 +357,7 @@ function Profile() {
           <button
             onClick={() => {
               setToggle(2);
-              navigate("/PlaylistList",{state:{playlists: playlists}})
+              navigate("/PlaylistList", { state: { playlists: playlists } });
             }}
             className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 2 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -372,7 +383,7 @@ function Profile() {
             onClick={() => {
               setToggle(3);
               fetchTweets();
-              navigate("/TweetList",{state:{tweets: tweets}})
+              navigate("/TweetList", { state: { tweets: tweets } });
             }}
             className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 3 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -399,7 +410,9 @@ function Profile() {
             <button
               onClick={() => {
                 setToggle(4);
-                navigate("/MiniDashboard", {state: {videos: videos, subscriberCount: subscriberCount}})
+                navigate("/MiniDashboard", {
+                  state: { videos: videos, subscriberCount: subscriberCount },
+                });
               }}
               className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
                 toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
@@ -428,7 +441,9 @@ function Profile() {
               onClick={() => {
                 setToggle(5);
                 dispatch(openToggleSubscription(toggleSubscription));
-                navigate("/SubscribedList", {state: {subscribedChannels: subscribedChannels}})
+                navigate("/SubscribedList", {
+                  state: { subscribedChannels: subscribedChannels },
+                });
               }}
               className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
                 toggle === 5 ? "md:bg-zinc-600 md:font-semibold" : ""
