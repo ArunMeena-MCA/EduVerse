@@ -14,6 +14,7 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import GeneralButton from "../utils/GeneralButton";
 import SecButton from "../utils/SecButton";
+import hidden_video from "../assets/hidden_video";
 
 function PlaylistView() {
   const playlistId = useParams();
@@ -169,24 +170,42 @@ function PlaylistView() {
       </div>
       <div className="md:ml-6 my-6">
         <div className="flex flex-col gap-3 mx-4">
-          {videos
-            .filter((video) => video.ispublished)
-            .map((video) => (
-              <div
-                key={video._id}
-                className="flex flex-col md:flex-row justify-between md:items-center"
-              >
-                <VideoListCard video={video} />
-                {user._id === localStorage.getItem("userId") && (
-                  <button
-                    onClick={() => removeVideo(video._id)}
-                    className="bg-gray-400 px-2 rounded-md font-semibold hover:text-red-500 hover:border hover:border-2 hover:border-red-500"
-                  >
-                    Remove Video
-                  </button>
-                )}
-              </div>
-            ))}
+          {videos.map((video) => (
+            <div
+              key={video._id}
+              className="flex flex-col md:flex-row justify-between md:items-center"
+            >
+              {video.ispublished ? (
+                <div>
+                  <VideoListCard video={video} />
+                  {user._id === localStorage.getItem("userId") && (
+                    <button
+                      onClick={() => removeVideo(video._id)}
+                      className="bg-gray-400 px-2 rounded-md font-semibold hover:text-red-500 hover:border hover:border-2 hover:border-red-500"
+                    >
+                      Remove Video
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="hover:bg-zinc-800 flex flex-col rounded-md cursor-pointer">
+                  <div className="h-[170px] flex gap-2 w-full">
+                    <img
+                      className="rounded-md w-[45%] m-1"
+                      src={hidden_video}
+                      alt="Thumbnail"
+                    />
+                    <div className="flex flex-col py-2">
+                      <h1 className="w-[70%] text-white text-md font-semibold line-clamp-1 sm:line-clamp-2">
+                        This is a private video.
+                      </h1>
+                    </div>
+                  </div>
+                  <hr className="my-2 border-gray-600" />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </div>
