@@ -12,9 +12,8 @@ import {
 } from "../redux/slices/modalSlice";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-import GeneralButton from "../utils/GeneralButton";
 import SecButton from "../utils/SecButton";
-import hidden_video from "../assets/hidden_video";
+import hidden_video from "../assets/hidden_video.png";
 
 function PlaylistView() {
   const playlistId = useParams();
