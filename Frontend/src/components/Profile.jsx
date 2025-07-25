@@ -278,7 +278,6 @@ function Profile() {
         <hr className="md:hidden mt-4 md:mt-1 " />
         <div className="flex flex-col md:flex-row justify-between items-center mx-10 mt-10">
           {userId.id === localStorage.getItem("userId") && (
-            <div>
               <button
                 onClick={() => {
                   setToggle(6);
@@ -290,7 +289,8 @@ function Profile() {
               >
                 Edit Profile
               </button>
-
+          )}
+          {userId.id === localStorage.getItem("userId") && (  
               <button
                 onClick={() => {
                   setToggle(7);
@@ -302,7 +302,8 @@ function Profile() {
               >
                 Upload Video
               </button>
-
+          )}
+          {userId.id === localStorage.getItem("userId") && (
               <button
                 onClick={() => {
                   setToggle(7);
@@ -314,8 +315,8 @@ function Profile() {
               >
                 Create Playlist
               </button>
-            </div>
           )}
+          
           <button
             onClick={() => {
               setToggle(1);
