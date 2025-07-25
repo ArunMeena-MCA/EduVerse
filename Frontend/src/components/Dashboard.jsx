@@ -60,7 +60,7 @@ function Dashboard(data) {
       </div>
 
       {/* Video list section */}
-      {userId.id === localStorage.getItem("userId") && (
+      {data.userId === localStorage.getItem("userId") && (
         <div className="border mt-10 mx-2">
           <div className="flex border px-4">
             <h1 className="w-[40%] text-white font-semibold text-lg text-center">

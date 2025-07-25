@@ -513,7 +513,7 @@ function Profile() {
           )}
           {toggle === 4 && (
             <div className="mt-4 mx-4">
-              <Dashboard videos={videos} subscriberCount={subscriberCount} />
+              <Dashboard videos={videos} userId={userId.id} subscriberCount={subscriberCount} />
             </div>
           )}
           {toggle === 5 && !subscribedChannels.length && (
