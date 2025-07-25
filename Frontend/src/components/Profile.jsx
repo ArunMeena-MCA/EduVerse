@@ -405,7 +405,7 @@ function Profile() {
           </button>
 
           {/* for small screen */}
-          <button
+          {/* <button
             onClick={() => {
               setToggle(4);
               navigate("/MiniDashboard", {
@@ -417,7 +417,7 @@ function Profile() {
             }`}
           >
             Dashboard
-          </button>
+          </button> */}
 
           {userId.id === localStorage.getItem("userId") && (
             <button
