@@ -412,7 +412,7 @@ function Profile() {
                 state: { videos: videos, subscriberCount: subscriberCount },
               });
             }}
-            className={`md:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
+            className={`md:hidden lg:hidden xl:hidden flex justify-center md:w-[25%] w-full mt-2 border md:border-none rounded-md md:rounded-none py-1 text-white cursor-pointer hover:font-bold ${
               toggle === 4 ? "md:bg-zinc-600 md:font-semibold" : ""
             }`}
           >
