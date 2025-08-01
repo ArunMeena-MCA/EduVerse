@@ -9,7 +9,7 @@ import {
   registrationSuccess,
   registrationFailure,
 } from "../redux/slices/registerSlice";
-import { openLogin,closeRegister } from "../redux/slices/modalSlice";
+import { openLogin, closeRegister } from "../redux/slices/modalSlice";
 import api from "../utils/api";
 import { AiOutlineLoading } from "react-icons/ai";
 import { MdVerified } from "react-icons/md";
@@ -41,6 +41,12 @@ function Register() {
     setValue,
     trigger,
   } = useForm();
+
+  useEffect(() => {
+    if (verified) {
+      handleSubmit(onSubmit)(); // Automatically submit the form when verified
+    }
+  }, [verified]);
 
   // Handle image selection with validation
   const handleImageChange = (event, type) => {
@@ -151,14 +157,14 @@ function Register() {
 
   const sendOtp = async (email) => {
     const data = {
-      email: email
-    }
+      email: email,
+    };
     try {
       const response = await api.post("/users/otp/send", data, {
         headers: { "Content-Type": "application/json" },
       });
       setstep(true);
-      setToken(response.data.token)
+      setToken(response.data.token);
       setTimer(60);
     } catch (error) {
       dispatch(
@@ -196,7 +202,6 @@ function Register() {
       setstep(true);
     }
   };
-
 
   useEffect(() => {
     if (timer > 0) {
@@ -413,7 +418,7 @@ function Register() {
                   )}
                   <div className="flex justify-center mt-4">
                     <PrimaryButton type="submit">
-                      {((loading && !verified) || loadingWheel) ? (
+                      {(loading && !verified) || loadingWheel ? (
                         <AiOutlineLoading className="animate-spin text-xl text-stone-800 mx-8 my-1" />
                       ) : (
                         "Register"
@@ -426,7 +431,14 @@ function Register() {
                   Already have an account?
                 </p>
                 <div className="flex justify-center mt-2">
-                  <SecButton onClick={()=> {dispatch(closeRegister()); dispatch(openLogin())}}>Log in</SecButton>
+                  <SecButton
+                    onClick={() => {
+                      dispatch(closeRegister());
+                      dispatch(openLogin());
+                    }}
+                  >
+                    Log in
+                  </SecButton>
                 </div>
               </div>
             ) : (
@@ -486,17 +498,25 @@ function Register() {
             <div className="flex justify-center items-center mt-4">
               <MdVerified size={72} color="green" />
             </div>
-              <h1 className="text-center text-white mt-8 font-bold text-xl">
-                Congratulations!
-              </h1>
-              <h1 className="text-center text-white mt-4 font-semibold text-xl">
-                Registered Successfully
-              </h1>
+            <h1 className="text-center text-white mt-8 font-bold text-xl">
+              Congratulations!
+            </h1>
+            <h1 className="text-center text-white mt-4 font-semibold text-xl">
+              Registered Successfully
+            </h1>
             <div className="flex justify-center items-center mt-4">
               <PiArrowFatLinesDownFill size={32} color="green" />
             </div>
             <div className="flex justify-center items-center mt-4">
-              <PrimaryButton onClick={()=> {dispatch(closeRegister()); dispatch(openLogin())}} className="text-4xl">Log in</PrimaryButton>
+              <PrimaryButton
+                onClick={() => {
+                  dispatch(closeRegister());
+                  dispatch(openLogin());
+                }}
+                className="text-4xl"
+              >
+                Log in
+              </PrimaryButton>
             </div>
           </div>
         )}
