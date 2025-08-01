@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import { errorHandler } from "./middlewares/error.middleware.js"
 
 const app = express()
 
@@ -39,7 +40,6 @@ app.use("/api/v1/notifications", notificationRouter)
 app.use("/api/v1/search", searchRouter)
 
 // error handler middleware (must be last)
-import { errorHandler } from "./middlewares/error.middleware.js"
 app.use(errorHandler)
 
 export { app }
