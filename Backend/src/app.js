@@ -9,9 +9,6 @@ app.use(cors({
     credentials: true
 }))
 
-// "http://localhost:5173",
-// "https://metube-tan.vercel.app"
-
 app.use(express.json({limit: "16kb"}))
 app.use(express.urlencoded({extended: true, limit: "16kb"}))
 app.use(express.static("public"))
@@ -41,4 +38,8 @@ app.use("/api/v1/dashboard", dashboardRouter)
 app.use("/api/v1/notifications", notificationRouter)
 app.use("/api/v1/search", searchRouter)
 
-export { app }   
+// error handler middleware (must be last)
+import { errorHandler } from "./middlewares/error.middleware.js"
+app.use(errorHandler)
+
+export { app }
