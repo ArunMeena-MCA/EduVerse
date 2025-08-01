@@ -145,6 +145,7 @@ function Register() {
         dispatch(openLogin());
         setLoadingWheel(false);
       } catch (error) {
+        console.log("Registration Error:", error);
         dispatch(
           registrationFailure(
             error.response?.data?.message || "Not registered!"
