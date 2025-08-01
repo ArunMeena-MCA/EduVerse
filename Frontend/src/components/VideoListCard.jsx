@@ -54,7 +54,7 @@ function VideoListCard(video) {
       onClick={() => navigate(`/VideoDetail/${video.video._id}`)}
       className="hover:bg-zinc-800 flex flex-col rounded-md cursor-pointer"
     >
-      <div className="h-[170px] flex gap-2 sm:w-[400px] md:w-[500px]">
+      <div className="h-[170px] flex gap-2 w-[400px] md:w-[500px]">
         <img
           className="rounded-md w-[45%] m-1"
           src={video.video.thumbnail}

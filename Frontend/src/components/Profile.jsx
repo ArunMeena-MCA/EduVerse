@@ -41,7 +41,7 @@ function Profile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // setToggle(0);
+    setToggle(-1);
     getUser();
     fetchVideos();
     fetchPlaylists();
