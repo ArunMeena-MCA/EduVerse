@@ -305,7 +305,7 @@ function VideoDetail() {
       <div className="md:w-[64%] ml-0 md:ml-12">
         <div className="mt-4">
           <video
-            className="rounded flex justify-center items-center bg-gray-900 h-96 w-full"
+            className="rounded flex justify-center items-center bg-gray-900 h-[70%] w-full"
             src={video.videoFile}
             controls
             autoPlay
