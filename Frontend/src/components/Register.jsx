@@ -148,7 +148,7 @@ function Register() {
         console.log("Registration Error:", error);
         dispatch(
           registrationFailure(
-            error.response?.data?.message || "Not registered!"
+            error.response?.data?.message || "This email may be already registered!"
           )
         );
         setLoadingWheel(false);
