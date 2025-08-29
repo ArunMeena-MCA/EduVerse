@@ -6,7 +6,7 @@ import { errorHandler } from "./middlewares/error.middleware.js"
 const app = express()
 
 app.use(cors({
-    origin: 'https://metube-tan.vercel.app', 
+    origin: 'https://EduVerse-tan.vercel.app', 
     credentials: true
 }))
 
