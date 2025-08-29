@@ -1,45 +1,64 @@
-<h1>🎬 EduVerse – Full Stack Video Hosting Platform</h1>
-EduVerse is a full-stack video hosting application inspired by YouTube, built using the MERN stack (MongoDB, Express, React, Node.js). It supports features such as video upload, like/dislike, comments, replies, subscriptions, and secure authentication – everything you expect from a modern video-sharing platform.
+# 🎓 EduVerse – Full Stack Digital Learning Platform  
 
-📌 Project Architecture Diagram
+EduVerse is a **full-stack digital learning platform** built on the **MERN stack (MongoDB, Express, React, Node.js)**.  
+It enables **instructors** to upload structured video lectures and **students** to watch, interact, and learn in a **distraction-free environment**.  
 
-<h2>🚀 Features</h2>
-<h3>✅ Common </h3>
-JWT-based Authentication (Access & Refresh Tokens)
+Unlike general-purpose platforms, **EduVerse is designed exclusively for education** — with a mission to make quality learning **affordable, ad-free, and community-driven**.  
 
-Bcrypt password hashing
+📌 [DB Model link](https://app.eraser.io/workspace/2admTVCNMmgJVw2ov5e6?origin=share)
 
-Responsive and interactive UI
+---
 
-RESTful API design
+## 👨‍🎓 For Students  
+- 🔑 Register/Login securely  
+- 🎥 Watch lectures in a distraction-free player  
+- 👍 Like/👎 Dislike lectures for quick feedback  
+- 💬 Comment & reply threads for peer/instructor discussions  
+- 🔔 Subscribe to instructors for lecture updates  
+- 📩 Get notified when new lectures are uploaded  
 
-Modular and scalable folder structure
+---
 
-<h3>🎥 Frontend (React + Redux)</h3>
-Login, Signup
+## 👩‍🏫 For Instructors  
+- 📤 Upload & manage lectures with metadata (title, subject, tags)  
+- 📊 Dashboard to see all uploaded content & details  
+- 🗣 Engage with students through Q&A in comments  
+- 📈 Track student engagement (likes, comments, subscriptions)  
 
-Upload video with preview
+---
 
-Like/Dislike videos
+## 🚀 Features  
 
-Comment and reply threads
+### ✅ Common  
+- 🔒 **JWT-based Authentication** (Access & Refresh Tokens)  
+- 🔑 **Bcrypt password hashing**  
+- 📱 **Responsive and interactive UI**  
+- 🌐 **RESTful API design**  
+- 📂 **Modular & scalable folder structure**  
 
-Subscribe/Unsubscribe to channels
+### 🎨 Frontend (React + Redux)  
+- 🔑 Login & Signup  
+- 📤 Upload video with preview  
+- 👍 Like/👎 Dislike videos  
+- 💬 Comment and reply threads  
+- 🔔 Subscribe/Unsubscribe to instructors  
+- 📩 Notification system  
+- 🛣 Dynamic routing with **React Router**  
 
-Notification system
+### ⚙️ Backend (Node.js + Express + MongoDB)  
+- 👥 User authentication & authorization  
+- 🎥 Video upload & metadata storage  
+- 👍/👎 Like & Dislike tracking per user  
+- 💬 Comments & nested replies  
+- 📡 Instructor subscription logic  
+- 🛡 Middleware for validation & error handling  
 
-Dynamic routing with React Router
+---
 
-<h3>🛠 Backend (Node.js + Express + MongoDB)</h3>
-User authentication & authorization
+## 🛠 Tech Stack  
+- **Frontend:** React, Redux, React Router  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB  
+- **Authentication:** JWT, Bcrypt  
 
-Video upload, metadata storage
-
-Like/dislike tracking per user
-
-Comments and replies with nesting
-
-Channel subscription logic
-
-Middleware for validation and errors
-
+---
