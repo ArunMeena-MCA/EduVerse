@@ -1,72 +1,64 @@
-<h1>EduVerse – Full Stack Digital Learning Platform</h1>
-EduVerse is a full-stack digital learning platform built on the MERN stack (MongoDB, Express, React, Node.js).
-It enables instructors to upload structured video lectures and students to watch, interact, and learn in a distraction-free environment.
+# 🎓 EduVerse – Full Stack Digital Learning Platform  
 
-Unlike general-purpose platforms, EduVerse is designed exclusively for education — with a mission to make quality learning affordable, ad-free, and community-driven.
+EduVerse is a **full-stack digital learning platform** built on the **MERN stack (MongoDB, Express, React, Node.js)**.  
+It enables **instructors** to upload structured video lectures and **students** to watch, interact, and learn in a **distraction-free environment**.  
 
-📌 Project Architecture Diagram
+Unlike general-purpose platforms, **EduVerse is designed exclusively for education** — with a mission to make quality learning **affordable, ad-free, and community-driven**.  
 
-<h3>For Students</h3>
+📌 *Project Architecture Diagram (Insert here)*  
 
-Register/Login securely
+---
 
-Watch lectures in a distraction-free player
+## 👨‍🎓 For Students  
+- 🔑 Register/Login securely  
+- 🎥 Watch lectures in a distraction-free player  
+- 👍 Like/👎 Dislike lectures for quick feedback  
+- 💬 Comment & reply threads for peer/instructor discussions  
+- 🔔 Subscribe to instructors for lecture updates  
+- 📩 Get notified when new lectures are uploaded  
 
-Like/Dislike lectures for quick feedback
+---
 
-Comment & reply threads for peer/instructor discussions
+## 👩‍🏫 For Instructors  
+- 📤 Upload & manage lectures with metadata (title, subject, tags)  
+- 📊 Dashboard to see all uploaded content & details  
+- 🗣 Engage with students through Q&A in comments  
+- 📈 Track student engagement (likes, comments, subscriptions)  
 
-Subscribe to instructors for lecture updates
+---
 
-Get notified when new lectures are uploaded
+## 🚀 Features  
 
-<h3>For Instructors</h3>  
+### ✅ Common  
+- 🔒 **JWT-based Authentication** (Access & Refresh Tokens)  
+- 🔑 **Bcrypt password hashing**  
+- 📱 **Responsive and interactive UI**  
+- 🌐 **RESTful API design**  
+- 📂 **Modular & scalable folder structure**  
 
-Upload/manage lectures with metadata (title, subject, tags)
+### 🎨 Frontend (React + Redux)  
+- 🔑 Login & Signup  
+- 📤 Upload video with preview  
+- 👍 Like/👎 Dislike videos  
+- 💬 Comment and reply threads  
+- 🔔 Subscribe/Unsubscribe to instructors  
+- 📩 Notification system  
+- 🛣 Dynamic routing with **React Router**  
 
-Dashboard to see all details.
+### ⚙️ Backend (Node.js + Express + MongoDB)  
+- 👥 User authentication & authorization  
+- 🎥 Video upload & metadata storage  
+- 👍/👎 Like & Dislike tracking per user  
+- 💬 Comments & nested replies  
+- 📡 Instructor subscription logic  
+- 🛡 Middleware for validation & error handling  
 
-Engage with students through Q&A in comments
+---
 
-Track student engagement (likes, comments, subscriptions).
+## 🛠 Tech Stack  
+- **Frontend:** React, Redux, React Router  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB  
+- **Authentication:** JWT, Bcrypt  
 
-<h2>🚀 Features</h2>
-<h3>✅ Common </h3>
-JWT-based Authentication (Access & Refresh Tokens)
-
-Bcrypt password hashing
-
-Responsive and interactive UI
-
-RESTful API design
-
-Modular and scalable folder structure
-
-<h3>🎥 Frontend (React + Redux)</h3>
-Login, Signup
-
-Upload video with preview
-
-Like/Dislike videos
-
-Comment and reply threads
-
-Subscribe/Unsubscribe to channels
-
-Notification system
-
-Dynamic routing with React Router
-
-<h3>🛠 Backend (Node.js + Express + MongoDB)</h3>
-User authentication & authorization
-
-Video upload, metadata storage
-
-Like/dislike tracking per user
-
-Comments and replies with nesting
-
-Channel subscription logic
-
-Middleware for validation and errors
-
+---
