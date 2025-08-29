@@ -1,5 +1,8 @@
-<h1>🎬 EduVerse – Full Stack Video Hosting Platform</h1>
-EduVerse is a full-stack video hosting application inspired by YouTube, built using the MERN stack (MongoDB, Express, React, Node.js). It supports features such as video upload, like/dislike, comments, replies, subscriptions, and secure authentication – everything you expect from a modern video-sharing platform.
+<h1>EduVerse – Full Stack Digital Learning Platform</h1>
+EduVerse is a full-stack digital learning platform built on the MERN stack (MongoDB, Express, React, Node.js).
+It enables instructors to upload structured video lectures and students to watch, interact, and learn in a distraction-free environment.
+
+Unlike general-purpose platforms, EduVerse is designed exclusively for education — with a mission to make quality learning affordable, ad-free, and community-driven.
 
 📌 Project Architecture Diagram
 
