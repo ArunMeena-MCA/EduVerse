@@ -5,7 +5,7 @@ It enables **instructors** to upload structured video lectures and **students** 
 
 Unlike general-purpose platforms, **EduVerse is designed exclusively for education** — with a mission to make quality learning **affordable, ad-free, and community-driven**.  
 
-📌 *Project Architecture Diagram (Insert here)*  
+📌 [DB Model link](https://app.eraser.io/workspace/2admTVCNMmgJVw2ov5e6?origin=share)
 
 ---
 
