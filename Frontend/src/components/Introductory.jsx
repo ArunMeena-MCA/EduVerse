@@ -15,7 +15,7 @@ function Introductory() {
   return (
     <div className="mt-12">
       <h1 className="text-white font-bold text-center text-5xl lg:text-8xl md:text-7xl">
-        Welcome to Metube
+        Welcome to EduVerse
       </h1>
       <h1 className="text-white font-bold text-center text-xl lg:text-4xl md:text-3xl mt-6">
         Your ultimate video-sharing destination

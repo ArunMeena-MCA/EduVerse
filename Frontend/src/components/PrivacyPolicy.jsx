@@ -3,7 +3,7 @@ import React from 'react';
 function PrivacyPolicy() {
   return (
     <div className="privacy-policy p-2 max-w-4xl mx-auto text-white mt-2">
-      <h1 className="text-3xl md:text-5xl text-center font-bold mb-12">Privacy Policy – MeTube</h1>
+      <h1 className="text-3xl md:text-5xl text-center font-bold mb-12">Privacy Policy – EduVerse</h1>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">📘 1. Information We Collect</h2>
       <h3 className="font-semibold">1.1 Personal Information</h3>
@@ -70,12 +70,12 @@ function PrivacyPolicy() {
       <p><strong>Email:</strong> [your@email.com]</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">🧒 8. Children’s Privacy</h2>
-      <p>MeTube is not intended for children under 13. We do not knowingly collect data from children.</p>
+      <p>EduVerse is not intended for children under 13. We do not knowingly collect data from children.</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">📩 9. Contact Us</h2>
       <p>Questions? Reach out to:</p>
-      <p><strong>Email:</strong> metube@gmail.com</p>
-      <p><strong>Address:</strong> Metube headoffice, Silicon valley, India</p>
+      <p><strong>Email:</strong> EduVerse@gmail.com</p>
+      <p><strong>Address:</strong> EduVerse headoffice, Silicon valley, India</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">🔁 10. Changes to This Policy</h2>
       <p>We may update this policy. Please review it regularly for updates.</p>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Routing from "../utils/Routing";
-import MeTube from "../assets/MeTube.png";
+import EduVerse from "../assets/EduVerse.png";
 import { useLocation, useNavigate, matchPath } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -97,7 +97,7 @@ export default function Navbar() {
                 navigate("/");
               }
             }}
-            src={MeTube}
+            src={EduVerse}
             alt="Logo"
             className="w-8 h-8 md:w-12 md:h-12 cursor-pointer rounded-full hover:shadow-[0px_0px_20px_rgba(251,113,133,0.8)]"
           />

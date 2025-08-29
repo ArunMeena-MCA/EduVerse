@@ -6,7 +6,7 @@ function Footer() {
         <p className='flex-col text-white text-sm md:text-md'>
             <a className='hover:font-semibold' href="/TermsAndConditions">Terms of Service</a> | <a className='hover:font-semibold' href="/PrivacyPolicy">Privacy Policy</a>
         </p>
-        <p className='text-gray-400 font-semibold text-xs'>© 2023 MeTube. All rights reserved.</p>
+        <p className='text-gray-400 font-semibold text-xs'>© 2023 EduVerse. All rights reserved.</p>
     </div>
   )
 }
