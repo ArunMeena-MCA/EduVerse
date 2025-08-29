@@ -6,6 +6,30 @@ Unlike general-purpose platforms, EduVerse is designed exclusively for education
 
 📌 Project Architecture Diagram
 
+<h3>For Students</h3>
+
+Register/Login securely
+
+Watch lectures in a distraction-free player
+
+Like/Dislike lectures for quick feedback
+
+Comment & reply threads for peer/instructor discussions
+
+Subscribe to instructors for lecture updates
+
+Get notified when new lectures are uploaded
+
+<h3>For Instructors</h3>  
+
+Upload/manage lectures with metadata (title, subject, tags)
+
+Dashboard to see all details.
+
+Engage with students through Q&A in comments
+
+Track student engagement (likes, comments, subscriptions).
+
 <h2>🚀 Features</h2>
 <h3>✅ Common </h3>
 JWT-based Authentication (Access & Refresh Tokens)
