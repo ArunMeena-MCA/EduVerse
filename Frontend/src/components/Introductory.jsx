@@ -18,7 +18,7 @@ function Introductory() {
         Welcome to EduVerse
       </h1>
       <h1 className="text-white font-bold text-center text-xl lg:text-4xl md:text-3xl mt-6">
-        Your Digital Learning Companion
+        Your Digital Learning & Teaching Companion
       </h1>
       <h2 className="text-white font-semibold flex justify-center items-center gap-2 mt-4 text-lg md:text-2xl">
         Learn <VscCircleFilled style={{ fontSize: "20px", color: "white" }} />{" "}
@@ -44,24 +44,6 @@ function Introductory() {
           Signup
         </SecButton>
       </div>
-
-      {/* Animation
-      <div className="overflow-hidden w-full mt-16">
-        <motion.div
-          className="flex"
-          animate={{ x: ["100%", "-100%"] }} // Moves from right to left
-          transition={{ repeat: Infinity, duration: 10, ease: "linear" }} // Infinite loop
-        >
-          {images.map((image, index) => (
-            <img
-              key={index}
-              className="h-28 w-auto"
-              src={image}
-              alt={`Reel ${index + 1}`}
-            />
-          ))}
-        </motion.div>
-      </div>       */}
     </div>
   );
 }
