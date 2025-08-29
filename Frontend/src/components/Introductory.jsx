@@ -5,12 +5,12 @@ import { motion } from "framer-motion";
 import PrimaryButton from "../utils/PrimaryButton";
 import SecButton from "../utils/SecButton";
 import { useDispatch, useSelector } from "react-redux";
-import { openLogin,openRegister } from "../redux/slices/modalSlice";
+import { openLogin, openRegister } from "../redux/slices/modalSlice";
 
 function Introductory() {
-    const images = [Reel, Reel, Reel, Reel, Reel];
-    const dispatch = useDispatch()
-    const {isLoginOpen} = useSelector((state) => state.modal)
+  const images = [Reel, Reel, Reel, Reel, Reel];
+  const dispatch = useDispatch();
+  const { isLoginOpen } = useSelector((state) => state.modal);
 
   return (
     <div className="mt-12">
@@ -18,16 +18,31 @@ function Introductory() {
         Welcome to EduVerse
       </h1>
       <h1 className="text-white font-bold text-center text-xl lg:text-4xl md:text-3xl mt-6">
-        Your ultimate video-sharing destination
+        Your Digital Learning Companion
       </h1>
       <h2 className="text-white font-semibold flex justify-center items-center gap-2 mt-4 text-lg md:text-2xl">
-        Watch <VscCircleFilled style={{ fontSize: "20px", color: "white" }} />{" "}
-        Upload <VscCircleFilled style={{ fontSize: "20px", color: "white" }} />{" "}
-        Share
+        Learn <VscCircleFilled style={{ fontSize: "20px", color: "white" }} />{" "}
+        Explore <VscCircleFilled style={{ fontSize: "20px", color: "white" }} />{" "}
+        Grow
       </h2>
+      <p className="text-white text-center mt-4 text-sm md:text-lg max-w-2xl mx-auto">
+        Access structured video lectures, connect with instructors, and engage
+        in discussions — all in a distraction-free, ad-free learning
+        environment.
+      </p>
       <div className="flex justify-center gap-5 mt-10">
-        <PrimaryButton onClick={()=> dispatch(openLogin())} className="bg-rose-400 text-xl md:text-3xl px-4">Login</PrimaryButton>
-        <SecButton onClick={() => dispatch(openRegister())} className="bg-stone-400 text-xl md:text-3xl ">Signup</SecButton>
+        <PrimaryButton
+          onClick={() => dispatch(openLogin())}
+          className="bg-rose-400 text-xl md:text-3xl px-4"
+        >
+          Login
+        </PrimaryButton>
+        <SecButton
+          onClick={() => dispatch(openRegister())}
+          className="bg-stone-400 text-xl md:text-3xl "
+        >
+          Signup
+        </SecButton>
       </div>
 
       {/* Animation
@@ -46,10 +61,7 @@ function Introductory() {
             />
           ))}
         </motion.div>
-      </div>       */
-      }
-
-      
+      </div>       */}
     </div>
   );
 }
