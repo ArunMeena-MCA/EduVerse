@@ -30,9 +30,9 @@ export const sendOTP = async (email) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Your Etube Verification Code ",
+    subject: "Your EduVerse Verification Code ",
     text: `Dear User,
-    Thank you for signing up with Etube!  
+    Thank you for signing up with EduVerse!  
 
     Your verification code is: ${otp}. 
 
