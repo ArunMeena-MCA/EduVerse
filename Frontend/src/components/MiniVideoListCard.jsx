@@ -61,7 +61,7 @@ function MiniVideoListCard(video) {
       />
 
       <div className="flex flex-col py-2">
-        <h1 className="w-[70%] text-white text-md font-semibold line-clamp-1 sm:line-clamp-2">
+        <h1 className="text-white text-md font-semibold line-clamp-1 sm:line-clamp-2">
           {video.video.title}
         </h1>
         <div className="mt-2">
