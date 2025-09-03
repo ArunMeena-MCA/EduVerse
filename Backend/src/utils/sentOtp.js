@@ -40,8 +40,8 @@ export const sendOTP = async (email) => {
 
     If you did not request this code, please ignore this email.  
 
-Best regards,  
-EduVerse Team  `,
+    Best regards,  
+    EduVerse Team  `,
   };
 
   try {

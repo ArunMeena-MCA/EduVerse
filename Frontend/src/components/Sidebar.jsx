@@ -25,7 +25,7 @@ function Sidebar({ userId, toggle, setToggle }) {
         </button>
         <hr className="border-1 border-gray-500 w-full" />
         {userId.id === localStorage.getItem("userId") && (
-          <div>
+          <div className="w-full">
             <button
               onClick={() => {
                 setToggle(0);
