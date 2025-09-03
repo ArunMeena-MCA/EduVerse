@@ -41,7 +41,7 @@ export const sendOTP = async (email) => {
     If you did not request this code, please ignore this email.  
 
 Best regards,  
-Etube Team  `,
+EduVerse Team  `,
   };
 
   try {
